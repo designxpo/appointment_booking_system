@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Dark app chrome. Public booking sites set their own light backgrounds. */
+html,
+body {
+  @apply bg-ink text-gray-200 antialiased;
+}
+
+::selection {
+  @apply bg-brand/40;
+}
+
+/* Shared primitives — every page styles itself through these. */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply btn bg-brand text-brand-fg hover:bg-indigo-400;
+  }
+  .btn-ghost {
+    @apply btn border border-ink-soft bg-ink-raised text-gray-300 hover:bg-ink-overlay;
+  }
+  .btn-danger {
+    @apply btn bg-rose-600 text-white hover:bg-rose-500;
+  }
+  .card {
+    @apply rounded-2xl border border-ink-border bg-ink-raised p-5;
+  }
+  .input {
+    @apply w-full rounded-xl border border-ink-soft bg-ink-overlay px-3 py-2 text-sm text-gray-100 placeholder-gray-500 outline-none focus:border-brand focus:ring-1 focus:ring-brand;
+  }
+  .label {
+    @apply mb-1 block text-xs font-semibold uppercase tracking-wider text-gray-400;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-gray-500;
+  }
+  /* Page header with icon tile, used across dashboard pages. */
+  .page-icon {
+    @apply flex h-10 w-10 items-center justify-center rounded-xl bg-brand-muted text-brand;
+  }
+
+  /* ── Marketing site primitives ─────────────────────────────────────────── */
+  /* Gradient pill CTA (hero / nav / cards). */
+  .btn-gradient {
+    @apply btn rounded-full px-5 py-2.5 text-white;
+    background-image: linear-gradient(180deg, #8987f7 0%, #5b58e8 100%);
+    box-shadow:
+      0 10px 30px -8px rgba(99, 102, 241, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .btn-gradient:hover {
+    background-image: linear-gradient(180deg, #9b99f9 0%, #6764ea 100%);
+  }
+  /* Subtle outlined pill used as a secondary CTA / nav action. */
+  .btn-outline {
+    @apply btn rounded-full border border-white/12 bg-white/5 px-5 py-2.5 text-gray-200 backdrop-blur hover:border-white/20 hover:bg-white/10;
+  }
+  /* Small label pill above section headings. */
+  .badge-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-gray-300 backdrop-blur;
+  }
+}
+
+@layer utilities {
+  /* Headline that fades from solid white into a soft violet-grey. */
+  .text-gradient {
+    background-image: linear-gradient(180deg, #ffffff 30%, rgba(199, 196, 255, 0.55) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Accent gradient for the emphasised second line of a headline. */
+  .text-gradient-brand {
+    background-image: linear-gradient(110deg, #c7d2fe 0%, #a5a3f8 45%, #7c79f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Faint blueprint grid for section backgrounds. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(124, 121, 246, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(124, 121, 246, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  /* Card with a 1px translucent border + glassy raised fill. */
+  .glass {
+    @apply border border-white/8 bg-white/[0.03] backdrop-blur;
+  }
+  /* Mask helper to fade marquees / grids at their edges. */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+}
+
+/* Slim scrollbars for the dark UI */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-ink-soft;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
