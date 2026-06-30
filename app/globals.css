@@ -156,6 +156,34 @@ body {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
     mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   }
+  /* Soft 1px divider that fades to transparent at both ends — replaces harsh
+     full-width white border lines. */
+  .hairline {
+    height: 1px;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.1) 25%,
+      rgba(255, 255, 255, 0.1) 75%,
+      transparent
+    );
+  }
+}
+
+/* Respect users who prefer less motion: stop all ambient animation. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-glow-pulse,
+  .animate-twinkle,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-float,
+  .animate-fade-up,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Slim scrollbars for the dark UI */

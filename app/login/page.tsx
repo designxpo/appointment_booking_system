@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "@/action/auth";
+import { AuthShell } from "@/components/marketing/auth-shell";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -20,44 +21,41 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
-      <h1 className="text-2xl font-bold">Welcome back</h1>
-      <p className="mt-1 text-sm text-gray-500">Log in to Slotnest.</p>
+    <AuthShell
+      title="Welcome back"
+      subtitle="Log in to your Slotnest dashboard."
+      footer={
+        <>
+          No account?{" "}
+          <Link href="/signup" className="font-medium text-brand hover:text-indigo-300">
+            Sign up
+          </Link>
+        </>
+      }
+    >
       <form action={action} className="mt-6 space-y-4">
         <div>
-          <label className="label" htmlFor="email">
-            Email
-          </label>
-          <input id="email" name="email" type="email" required className="input" />
+          <label className="label" htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required className="input" placeholder="you@business.com" />
         </div>
         <div>
-          <label className="label" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            className="input"
-          />
+          <label className="label" htmlFor="password">Password</label>
+          <input id="password" name="password" type="password" required className="input" placeholder="••••••••" />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button type="submit" disabled={pending} className="btn-primary w-full">
+        {error && (
+          <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+            {error}
+          </p>
+        )}
+        <button type="submit" disabled={pending} className="btn-gradient w-full justify-center disabled:opacity-60">
           {pending ? "Logging in…" : "Log in"}
         </button>
+        <p className="text-center text-xs">
+          <Link href="/forgot-password" className="text-gray-500 hover:text-gray-300">
+            Forgot password?
+          </Link>
+        </p>
       </form>
-      <p className="mt-3 text-center text-sm">
-        <Link href="/forgot-password" className="text-gray-500 hover:text-brand">
-          Forgot password?
-        </Link>
-      </p>
-      <p className="mt-4 text-center text-sm text-gray-500">
-        No account?{" "}
-        <Link href="/signup" className="text-brand">
-          Sign up
-        </Link>
-      </p>
-    </main>
+    </AuthShell>
   );
 }

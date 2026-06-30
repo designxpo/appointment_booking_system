@@ -53,6 +53,14 @@ const config: Config = {
           "0%,100%": { opacity: "0.55" },
           "50%": { opacity: "1" },
         },
+        "glow-pulse": {
+          "0%,100%": { opacity: "0.65", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.1)" },
+        },
+        twinkle: {
+          "0%,100%": { opacity: "0.35", transform: "scale(0.85)" },
+          "50%": { opacity: "1", transform: "scale(1.1)" },
+        },
       },
       animation: {
         float: "float 7s ease-in-out infinite",
@@ -60,6 +68,8 @@ const config: Config = {
         "marquee-reverse": "marquee-reverse 44s linear infinite",
         "fade-up": "fade-up .7s cubic-bezier(.16,1,.3,1) both",
         "pulse-glow": "pulse-glow 5s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 9s ease-in-out infinite",
+        twinkle: "twinkle 4s ease-in-out infinite",
       },
     },
   },

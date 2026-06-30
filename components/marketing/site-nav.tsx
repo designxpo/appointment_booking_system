@@ -30,11 +30,12 @@ export function SiteNav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-white/8 bg-ink/80 backdrop-blur-xl"
-          : "border-b border-transparent"
+        scrolled ? "bg-ink/70 backdrop-blur-xl" : ""
       }`}
     >
+      {scrolled && (
+        <div aria-hidden className="hairline absolute inset-x-0 bottom-0" />
+      )}
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Slotnest home">
           <Logo className="h-7 w-7" />
@@ -90,7 +91,8 @@ export function SiteNav() {
 
       {/* Mobile sheet */}
       {open && (
-        <div className="border-t border-white/8 bg-ink/95 px-5 py-4 backdrop-blur-xl md:hidden">
+        <div className="relative bg-ink/95 px-5 py-4 backdrop-blur-xl md:hidden">
+          <div aria-hidden className="hairline absolute inset-x-0 top-0" />
           <div className="flex flex-col gap-1">
             {LINKS.map((l) => (
               <a

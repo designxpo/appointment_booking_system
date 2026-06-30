@@ -33,7 +33,8 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative border-t border-white/8">
+    <footer className="relative">
+      <div aria-hidden className="hairline absolute inset-x-0 top-0" />
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div>
           <Link href="/" className="flex items-center gap-2.5">
@@ -64,7 +65,8 @@ export function SiteFooter() {
         ))}
       </div>
 
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/8 px-5 py-6 text-xs text-gray-500 sm:flex-row sm:px-8">
+      <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-xs text-gray-500 sm:flex-row sm:px-8">
+        <div aria-hidden className="hairline absolute inset-x-5 top-0 sm:inset-x-8" />
         <span>© {new Date().getFullYear()} Slotnest. All rights reserved.</span>
         <span className="flex items-center gap-1.5">
           Powered by

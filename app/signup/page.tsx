@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signUp } from "@/action/auth";
+import { AuthShell } from "@/components/marketing/auth-shell";
 
 export default function SignupPage() {
   const [message, setMessage] = useState<string | null>(null);
@@ -20,43 +21,46 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
-      <h1 className="text-2xl font-bold">Create your account</h1>
-      <p className="mt-1 text-sm text-gray-500">
-        Verify your email, then set up your business.
-      </p>
+    <AuthShell
+      title="Create your account"
+      subtitle="Set up your AI receptionist in minutes — free, no card required."
+      footer={
+        <>
+          Have an account?{" "}
+          <Link href="/login" className="font-medium text-brand hover:text-indigo-300">
+            Log in
+          </Link>
+        </>
+      }
+    >
       <form action={action} className="mt-6 space-y-4">
         <div>
-          <label className="label" htmlFor="email">
-            Email
-          </label>
-          <input id="email" name="email" type="email" required className="input" />
+          <label className="label" htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required className="input" placeholder="you@business.com" />
         </div>
         <div>
-          <label className="label" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            className="input"
-          />
+          <label className="label" htmlFor="password">Password</label>
+          <input id="password" name="password" type="password" required minLength={8} className="input" placeholder="At least 8 characters" />
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {message && <p className="text-sm text-green-600">{message}</p>}
-        <button type="submit" disabled={pending} className="btn-primary w-full">
-          {pending ? "Creating…" : "Sign up"}
+        {error && (
+          <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+            {error}
+          </p>
+        )}
+        {message && (
+          <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+            {message}
+          </p>
+        )}
+        <button type="submit" disabled={pending} className="btn-gradient w-full justify-center disabled:opacity-60">
+          {pending ? "Creating…" : "Create account"}
         </button>
+        <p className="text-center text-xs text-gray-500">
+          By signing up you agree to our{" "}
+          <Link href="/terms" className="text-gray-400 hover:text-gray-200">Terms</Link> and{" "}
+          <Link href="/privacy" className="text-gray-400 hover:text-gray-200">Privacy Policy</Link>.
+        </p>
       </form>
-      <p className="mt-4 text-center text-sm text-gray-500">
-        Have an account?{" "}
-        <Link href="/login" className="text-brand">
-          Log in
-        </Link>
-      </p>
-    </main>
+    </AuthShell>
   );
 }

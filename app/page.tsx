@@ -51,10 +51,10 @@ function Hero() {
       </div>
 
       {/* Sparkle accents around the headline */}
-      <Sparkle className="left-[12%] top-[28%] hidden sm:block" size={20} />
-      <Sparkle className="right-[14%] top-[22%] hidden sm:block" size={14} />
-      <Sparkle className="left-[22%] top-[46%] hidden lg:block" size={12} />
-      <Sparkle className="right-[20%] top-[52%] hidden lg:block" size={18} />
+      <Sparkle className="left-[12%] top-[28%] hidden sm:block" size={20} delay={0} />
+      <Sparkle className="right-[14%] top-[22%] hidden sm:block" size={14} delay={1.2} />
+      <Sparkle className="left-[22%] top-[46%] hidden lg:block" size={12} delay={2.1} />
+      <Sparkle className="right-[20%] top-[52%] hidden lg:block" size={18} delay={0.6} />
 
       <div className="relative mx-auto max-w-3xl text-center">
         <div className="flex justify-center animate-fade-up">
@@ -108,11 +108,9 @@ function Hero() {
       <div className="relative mx-auto mt-16 max-w-5xl animate-fade-up">
         <div aria-hidden className="pointer-events-none absolute -inset-x-24 -top-24 bottom-[-15%] -z-10">
           <Bloom className="left-1/2 top-1/4 h-[70%] w-[80%] -translate-x-1/2" color="rgba(124,121,246,0.4)" blur={120} />
-          <Bloom className="left-1/2 bottom-0 h-[45%] w-[60%] -translate-x-1/2" color="rgba(139,92,246,0.45)" blur={100} />
-          <Bloom className="left-[20%] top-1/2 h-[40%] w-[35%] -translate-x-1/2" color="rgba(99,102,241,0.35)" blur={110} />
+          <Bloom className="left-1/2 bottom-0 h-[45%] w-[60%] -translate-x-1/2" color="rgba(139,92,246,0.45)" blur={100} delay={2} />
+          <Bloom className="left-[20%] top-1/2 h-[40%] w-[35%] -translate-x-1/2" color="rgba(99,102,241,0.35)" blur={110} delay={4} />
         </div>
-        <Sparkle className="-left-2 top-8 hidden md:block" size={16} />
-        <Sparkle className="-right-3 top-1/3 hidden md:block" size={20} />
         <DashboardMock />
       </div>
     </section>
