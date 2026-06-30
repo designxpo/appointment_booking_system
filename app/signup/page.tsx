@@ -6,18 +6,18 @@ import { signUp } from "@/action/auth";
 import { AuthShell } from "@/components/marketing/auth-shell";
 
 export default function SignupPage() {
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   async function action(formData: FormData) {
     setPending(true);
     setError(null);
-    setMessage(null);
     const res = await signUp(formData);
-    setPending(false);
-    if (res?.error) setError(res.error);
-    else if (res?.message) setMessage(res.message);
+    // On success the server action redirects to /onboarding; only errors return.
+    if (res?.error) {
+      setError(res.error);
+      setPending(false);
+    }
   }
 
   return (
@@ -45,11 +45,6 @@ export default function SignupPage() {
         {error && (
           <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
             {error}
-          </p>
-        )}
-        {message && (
-          <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
-            {message}
           </p>
         )}
         <button type="submit" disabled={pending} className="btn-gradient w-full justify-center disabled:opacity-60">

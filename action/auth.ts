@@ -2,11 +2,17 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { DEV_MOCK } from "@/lib/env";
 
 /**
- * Auth server actions. Signup uses email verification — the user must confirm
- * before they can complete onboarding (gate enforced in the dashboard layout).
+ * Auth server actions.
+ *
+ * Email verification is disabled for now: signup creates the account already
+ * confirmed (via the service-role admin API), signs the user straight in, and
+ * sends them to onboarding. This works regardless of the project's "Confirm
+ * email" setting. To re-enable verification later, switch signUp back to
+ * `supabase.auth.signUp({ ... emailRedirectTo })` and turn the toggle on.
  *
  * In DEV_MOCK mode there is no Supabase backend, so every action short-circuits
  * to the mocked dashboard/landing instead of calling auth (which would fail
@@ -15,24 +21,40 @@ import { DEV_MOCK } from "@/lib/env";
  */
 
 export async function signUp(formData: FormData) {
-  // In mock mode skip email verification and drop the user straight into
-  // onboarding, so the industry-tailoring flow is part of the demo.
+  // In mock mode there is no backend — drop the user straight into onboarding
+  // so the industry-tailoring flow is part of the demo.
   if (DEV_MOCK) redirect("/onboarding");
 
-  const email = String(formData.get("email") ?? "");
+  const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp({
+  if (!email || password.length < 8) {
+    return { error: "Enter a valid email and a password of at least 8 characters." };
+  }
+
+  // Create the user already email-confirmed so no verification step is needed.
+  const admin = createAdminClient();
+  const { error: createError } = await admin.auth.admin.createUser({
     email,
     password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
-    },
+    email_confirm: true,
   });
 
-  if (error) return { error: error.message };
-  return { ok: true, message: "Check your email to verify your account." };
+  if (createError) {
+    const exists = /already|registered|exists/i.test(createError.message);
+    return {
+      error: exists
+        ? "An account with that email already exists. Log in instead."
+        : createError.message,
+    };
+  }
+
+  // Establish the session via the cookie-based client, then go to onboarding.
+  const supabase = await createClient();
+  const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+  if (signInError) return { error: signInError.message };
+
+  redirect("/onboarding");
 }
 
 export async function signIn(formData: FormData) {
