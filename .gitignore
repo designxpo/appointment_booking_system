@@ -25,3 +25,6 @@ yarn-error.log*
 *.pem
 .vercel
 *.tsbuildinfo
+
+# supabase CLI scratch
+supabase/.temp
