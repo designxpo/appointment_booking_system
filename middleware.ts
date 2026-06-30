@@ -7,7 +7,7 @@ const DEV_MOCK =
   process.env.NEXT_PUBLIC_DEV_MOCK === "true" &&
   process.env.NODE_ENV !== "production";
 
-// e.g. "flowbook.ai" — tenant sites live at <subdomain>.flowbook.ai.
+// e.g. "slotnest.ai" — tenant sites live at <subdomain>.slotnest.ai.
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "";
 // Hosts that are NOT a tenant (the marketing/app domain itself).
 const RESERVED = new Set(["www", "app", "admin", "api"]);

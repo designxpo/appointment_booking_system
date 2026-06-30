@@ -1,5 +1,5 @@
 -- ============================================================================
--- FlowBookAI — Row-Level Security policies
+-- Slotnest — Row-Level Security policies
 -- Run AFTER schema.sql.
 --
 -- Model:

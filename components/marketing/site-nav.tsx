@@ -36,9 +36,9 @@ export function SiteNav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="FlowBookAI home">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Slotnest home">
           <Logo className="h-7 w-7" />
-          <span className="text-lg font-semibold tracking-tight text-white">FlowBookAI</span>
+          <span className="text-lg font-semibold tracking-tight text-white">Slotnest</span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">

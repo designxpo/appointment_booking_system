@@ -38,7 +38,7 @@ export function SiteFooter() {
         <div>
           <Link href="/" className="flex items-center gap-2.5">
             <Logo className="h-7 w-7" />
-            <span className="text-lg font-semibold tracking-tight text-white">FlowBookAI</span>
+            <span className="text-lg font-semibold tracking-tight text-white">Slotnest</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-500">
             The AI receptionist that books appointments around the clock — for 40+
@@ -65,7 +65,7 @@ export function SiteFooter() {
       </div>
 
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/8 px-5 py-6 text-xs text-gray-500 sm:flex-row sm:px-8">
-        <span>© {new Date().getFullYear()} FlowBookAI. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Slotnest. All rights reserved.</span>
         <span className="flex items-center gap-1.5">
           Powered by
           <span className="font-medium text-gray-400">Anthropic Claude</span>

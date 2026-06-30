@@ -22,7 +22,7 @@ export default function LoginPage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
       <h1 className="text-2xl font-bold">Welcome back</h1>
-      <p className="mt-1 text-sm text-gray-500">Log in to FlowBookAI.</p>
+      <p className="mt-1 text-sm text-gray-500">Log in to Slotnest.</p>
       <form action={action} className="mt-6 space-y-4">
         <div>
           <label className="label" htmlFor="email">

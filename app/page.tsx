@@ -58,7 +58,7 @@ function Hero() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-400 animate-fade-up sm:text-lg">
-          FlowBookAI answers your clients, checks live availability, and books
+          Slotnest answers your clients, checks live availability, and books
           appointments around the clock — so you capture every lead while you
           focus on the work that matters.
         </p>
@@ -168,14 +168,14 @@ function Features() {
 
         {/* Website builder — wide */}
         <FeatureCard className="lg:col-span-2" icon={<GlobeIcon />} title="Built-in booking website builder"
-          body="Launch a branded site at yourname.flowbook.ai in minutes. Pick a theme, drop in your services, and start taking bookings — no developer needed.">
+          body="Launch a branded site at yourname.slotnest.ai in minutes. Pick a theme, drop in your services, and start taking bookings — no developer needed.">
           <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-ink-overlay/60">
             <div className="flex items-center gap-1.5 border-b border-white/8 px-3 py-2">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
               <span className="ml-3 rounded-md bg-white/5 px-2 py-0.5 text-[10px] text-gray-400">
-                brightsmile.flowbook.ai
+                brightsmile.slotnest.ai
               </span>
             </div>
             <div className="grid gap-3 p-4 sm:grid-cols-[1.4fr_1fr]">
@@ -203,7 +203,7 @@ function Features() {
 
 /* ── How it works ──────────────────────────────────────────────────────── */
 const STEPS = [
-  { n: "01", icon: <LayersIcon />, title: "Pick your industry", body: "Choose your field and role. FlowBookAI tailors labels, default services, and your AI receptionist's tone instantly.", tags: ["40+ industries", "Auto-setup"] },
+  { n: "01", icon: <LayersIcon />, title: "Pick your industry", body: "Choose your field and role. Slotnest tailors labels, default services, and your AI receptionist's tone instantly.", tags: ["40+ industries", "Auto-setup"] },
   { n: "02", icon: <ClockIcon />, title: "Set hours & services", body: "Define your working hours, breaks, buffers, and services. Availability is calculated for you — timezone-safe.", tags: ["Working hours", "Buffers"] },
   { n: "03", icon: <GlobeIcon />, title: "Publish your site", body: "Pick a theme and publish a branded booking page at your own subdomain. Share the link or embed the widget.", tags: ["Branded site", "Embed widget"] },
   { n: "04", icon: <BotIcon />, title: "Let AI handle bookings", body: "Your AI receptionist chats, books, captures leads, and sends reminders 24/7 while you get back to work.", tags: ["24/7", "Reminders"] },
@@ -214,7 +214,7 @@ function HowItWorks() {
     <section id="how-it-works" className="mt-32 scroll-mt-24 px-5 sm:px-8">
       <SectionIntro
         badge="Work Process"
-        title={<>Getting started with <br className="hidden sm:block" />FlowBookAI</>}
+        title={<>Getting started with <br className="hidden sm:block" />Slotnest</>}
         subtitle="From sign-up to your first AI-booked appointment in four simple steps."
       />
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -255,7 +255,7 @@ function Testimonials() {
       <SectionIntro
         badge="Testimonials"
         title="Loved by busy professionals"
-        subtitle="See why teams across dozens of industries let FlowBookAI run their front desk."
+        subtitle="See why teams across dozens of industries let Slotnest run their front desk."
       />
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
         {TESTIMONIALS.map((t) => (

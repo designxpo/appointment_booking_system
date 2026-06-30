@@ -3,14 +3,14 @@ import { LegalPage, type LegalSection } from "@/components/marketing/legal-page"
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How FlowBookAI collects, uses, and protects your data and your clients' data.",
+  description: "How Slotnest collects, uses, and protects your data and your clients' data.",
 };
 
 const SECTIONS: LegalSection[] = [
   {
     heading: "Who we are",
     body: [
-      "FlowBookAI provides AI-powered appointment booking software. This policy explains what information we process when you use our website, dashboard, and the booking sites we host on your behalf.",
+      "Slotnest provides AI-powered appointment booking software. This policy explains what information we process when you use our website, dashboard, and the booking sites we host on your behalf.",
     ],
   },
   {
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      intro="Your trust matters. Here's a plain-language summary of what data FlowBookAI processes and why."
+      intro="Your trust matters. Here's a plain-language summary of what data Slotnest processes and why."
       updated="June 30, 2026"
       sections={SECTIONS}
     />

@@ -281,7 +281,7 @@ function Footer({ businessName }: { businessName: string }) {
     <footer className="bg-gray-950 px-6 py-8 text-center text-sm text-gray-400">
       <div className="font-semibold text-white">{businessName}</div>
       <div className="mt-1">
-        © {new Date().getFullYear()} · Powered by <span className="text-gray-300">FlowBookAI</span>
+        © {new Date().getFullYear()} · Powered by <span className="text-gray-300">Slotnest</span>
       </div>
     </footer>
   );

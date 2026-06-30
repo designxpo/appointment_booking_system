@@ -1,5 +1,5 @@
 /**
- * FlowBookAI brand mark — a rounded hexagon holding a stylised calendar check,
+ * Slotnest brand mark — a rounded hexagon holding a stylised calendar check,
  * filled with the indigo→violet brand gradient. Pure SVG, scales to any size.
  */
 export function Logo({ className = "h-7 w-7" }: { className?: string }) {

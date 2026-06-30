@@ -1,8 +1,8 @@
 /**
- * FlowBookAI embeddable widget loader.
+ * Slotnest embeddable widget loader.
  *
  * Usage on any website:
- *   <script src="https://app.flowbook.ai/widget.js" data-flowbook="CLINIC_ID" async></script>
+ *   <script src="https://app.slotnest.ai/widget.js" data-slotnest="CLINIC_ID" async></script>
  *
  * Injects a floating launcher button that opens the booking chat (the /embed
  * page) in an iframe. Dependency-free; safe to drop on any page.
@@ -10,10 +10,10 @@
 (function () {
   var script =
     document.currentScript ||
-    document.querySelector("script[data-flowbook]");
+    document.querySelector("script[data-slotnest]");
   if (!script) return;
 
-  var clinicId = script.getAttribute("data-flowbook");
+  var clinicId = script.getAttribute("data-slotnest");
   if (!clinicId) return;
 
   var origin = new URL(script.src).origin;

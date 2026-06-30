@@ -62,13 +62,13 @@ export async function sendContactMessage(formData: FormData): Promise<ContactRes
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
-    from: process.env.RESEND_FROM_EMAIL || "bookings@flowbook.ai",
+    from: process.env.RESEND_FROM_EMAIL || "bookings@slotnest.ai",
     to,
     replyTo: email,
     subject: `New enquiry from ${name}${business ? ` — ${business}` : ""}`,
     html: `
       <div style="font-family:system-ui,sans-serif;max-width:560px;margin:auto">
-        <h2 style="margin:0 0 12px">New FlowBookAI enquiry</h2>
+        <h2 style="margin:0 0 12px">New Slotnest enquiry</h2>
         <p style="margin:4px 0"><strong>Name:</strong> ${escapeHtml(name)}</p>
         <p style="margin:4px 0"><strong>Email:</strong> ${escapeHtml(email)}</p>
         ${business ? `<p style="margin:4px 0"><strong>Business:</strong> ${escapeHtml(business)}</p>` : ""}

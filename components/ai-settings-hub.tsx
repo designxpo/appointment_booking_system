@@ -44,14 +44,14 @@ export function AiSettingsHub({
   const [pending, setPending] = useState(false);
 
   const widgetUrl = `${appUrl}/embed/${clinicId}`;
-  const iframeSnippet = `<!-- FlowBookAI Widget -->
+  const iframeSnippet = `<!-- Slotnest Widget -->
 <iframe
   src="${widgetUrl}"
   style="position:fixed;bottom:0;right:0;width:420px;height:680px;border:none;z-index:9999;background:transparent;"
   allow="clipboard-write"
 ></iframe>`;
-  const scriptSnippet = `<!-- FlowBookAI Widget -->
-<script src="${appUrl}/widget.js" data-flowbook="${clinicId}" async></script>`;
+  const scriptSnippet = `<!-- Slotnest Widget -->
+<script src="${appUrl}/widget.js" data-slotnest="${clinicId}" async></script>`;
 
   function set<K extends keyof AiConfig>(key: K, value: AiConfig[K]) {
     setD((p) => ({ ...p, [key]: value }));

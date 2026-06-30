@@ -3,7 +3,7 @@ import { LegalPage, type LegalSection } from "@/components/marketing/legal-page"
 
 export const metadata: Metadata = {
   title: "Security",
-  description: "How FlowBookAI keeps your data and your clients' bookings safe.",
+  description: "How Slotnest keeps your data and your clients' bookings safe.",
 };
 
 const SECTIONS: LegalSection[] = [
@@ -53,7 +53,7 @@ export default function SecurityPage() {
   return (
     <LegalPage
       title="Security"
-      intro="Security isn't a bolt-on. Here's how FlowBookAI protects your account, your bookings, and your clients."
+      intro="Security isn't a bolt-on. Here's how Slotnest protects your account, your bookings, and your clients."
       updated="June 30, 2026"
       sections={SECTIONS}
     />

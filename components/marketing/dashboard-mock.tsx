@@ -1,7 +1,7 @@
 import { Logo } from "./logo";
 
 /**
- * Static, pixel-styled mock of the FlowBookAI dashboard used as the hero visual.
+ * Static, pixel-styled mock of the Slotnest dashboard used as the hero visual.
  * Pure markup + an inline SVG chart — no images, no client JS. Fully responsive:
  * the sidebar and side panel collapse on small screens instead of scrolling.
  */
@@ -12,7 +12,7 @@ export function DashboardMock() {
       <div className="flex items-center justify-between gap-3 border-b border-white/8 px-4 py-3">
         <div className="flex items-center gap-2.5">
           <Logo className="h-5 w-5" />
-          <span className="text-sm font-semibold text-white">FlowBookAI</span>
+          <span className="text-sm font-semibold text-white">Slotnest</span>
           <span className="ml-1 hidden items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-gray-300 sm:inline-flex">
             <span className="grid h-4 w-4 place-items-center rounded bg-brand/30 text-[9px]">🦷</span>
             Bright Smile Dental

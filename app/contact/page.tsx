@@ -6,7 +6,7 @@ import { ContactForm } from "@/components/marketing/contact-form";
 export const metadata: Metadata = {
   title: "Book a Call",
   description:
-    "Talk to the FlowBookAI team about automating your bookings, or start free in minutes.",
+    "Talk to the Slotnest team about automating your bookings, or start free in minutes.",
 };
 
 const POINTS = [
@@ -25,7 +25,7 @@ export default function ContactPage() {
             Let&apos;s get you booking on autopilot
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-base text-gray-400">
-            Tell us about your business and we&apos;ll show you how FlowBookAI can
+            Tell us about your business and we&apos;ll show you how Slotnest can
             run your front desk. Prefer to dive in? You can start free right now.
           </p>
         </div>

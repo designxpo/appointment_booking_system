@@ -1,4 +1,4 @@
-# FlowBookAI
+# Slotnest
 
 AI-powered, multi-industry smart appointment booking SaaS. An AI receptionist
 ("Entropy", powered by the Anthropic Claude API) handles scheduling and client
@@ -89,4 +89,4 @@ Actions `schedule`, or plain `cron` + `curl`):
 - On-chain verification of USDT payments (`action/billing.ts`).
 - Full daily/weekly/monthly calendar grid (current view is a grouped list).
 - Generate Supabase types: `supabase gen types typescript`.
-- Map `<subdomain>.flowbook.ai` → `/site/<subdomain>` at DNS/edge.
+- Map `<subdomain>.slotnest.ai` → `/site/<subdomain>` at DNS/edge.

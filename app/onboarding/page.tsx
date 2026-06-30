@@ -36,13 +36,13 @@ export default function OnboardingPage() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white">
             F
           </div>
-          <span className="text-lg font-bold text-white">FlowBookAI</span>
+          <span className="text-lg font-bold text-white">Slotnest</span>
         </div>
         <div>
           <div className="text-4xl">🚀</div>
           <h2 className="mt-4 text-2xl font-bold text-white">Set up in 2 minutes.</h2>
           <p className="mt-2 text-gray-400">
-            Pick your profession and FlowBookAI adapts its language, AI, and
+            Pick your profession and Slotnest adapts its language, AI, and
             defaults to match your industry.
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function OnboardingPage() {
           <>
             <h1 className="mt-1 text-3xl font-bold text-white">What&apos;s your profession?</h1>
             <p className="mt-1 text-gray-400">
-              FlowBookAI adapts its language, AI, and defaults to your industry
+              Slotnest adapts its language, AI, and defaults to your industry
             </p>
 
             {/* Category chips */}
@@ -131,7 +131,7 @@ export default function OnboardingPage() {
                 <label className="label" htmlFor="subdomain">Subdomain</label>
                 <div className="flex items-center gap-2">
                   <input id="subdomain" name="subdomain" required placeholder="acme-dental" className="input" />
-                  <span className="text-sm text-gray-500">.flowbook.ai</span>
+                  <span className="text-sm text-gray-500">.slotnest.ai</span>
                 </div>
               </div>
               {error && <p className="text-sm text-rose-400">{error}</p>}

@@ -19,7 +19,7 @@ export const revalidate = 3600;
 
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? "";
 
-/** Apex/marketing origin, e.g. https://flowbook.ai (or the app URL in dev). */
+/** Apex/marketing origin, e.g. https://slotnest.ai (or the app URL in dev). */
 function apexOrigin(): string {
   return ROOT_DOMAIN ? `https://${ROOT_DOMAIN}` : appUrl().replace(/\/$/, "");
 }

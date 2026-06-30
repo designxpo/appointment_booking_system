@@ -1,5 +1,5 @@
 -- ============================================================================
--- FlowBookAI — database schema
+-- Slotnest — database schema
 -- Run in the Supabase SQL editor (or via the CLI) on a fresh project.
 -- RLS policies live in rls.sql; storage buckets in storage.sql.
 -- ============================================================================

@@ -5,15 +5,15 @@ const SITE_URL = process.env.NEXT_PUBLIC_ROOT_DOMAIN
   ? `https://${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
   : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-const TITLE = "FlowBookAI — AI Receptionist & Smart Appointment Booking";
+const TITLE = "Slotnest — AI Receptionist & Smart Appointment Booking";
 const DESCRIPTION =
-  "Turn conversations into booked appointments. FlowBookAI is the AI receptionist that answers clients, checks live availability, and books 24/7 — for 40+ industries, with a built-in website builder.";
+  "Turn conversations into booked appointments. Slotnest is the AI receptionist that answers clients, checks live availability, and books 24/7 — for 40+ industries, with a built-in website builder.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
-    template: "%s — FlowBookAI",
+    template: "%s — Slotnest",
   },
   description: DESCRIPTION,
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "FlowBookAI",
+    siteName: "Slotnest",
     title: TITLE,
     description: DESCRIPTION,
   },

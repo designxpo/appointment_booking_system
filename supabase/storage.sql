@@ -1,5 +1,5 @@
 -- ============================================================================
--- FlowBookAI — Storage buckets & policies
+-- Slotnest — Storage buckets & policies
 -- Run AFTER rls.sql.
 --
 -- Bucket `website-images` holds CMS-uploaded assets (hero images, etc.).

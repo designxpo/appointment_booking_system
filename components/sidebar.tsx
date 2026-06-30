@@ -83,7 +83,7 @@ export function Sidebar({
           F
         </div>
         <div className="min-w-0">
-          <div className="text-base font-bold tracking-tight text-white">FlowBookAI</div>
+          <div className="text-base font-bold tracking-tight text-white">Slotnest</div>
           <div className="truncate text-xs text-gray-500">{businessName}</div>
         </div>
       </div>

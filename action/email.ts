@@ -20,7 +20,7 @@ function getResend(): Resend | null {
   return _resend;
 }
 
-const FROM = () => process.env.RESEND_FROM_EMAIL || "bookings@flowbook.ai";
+const FROM = () => process.env.RESEND_FROM_EMAIL || "bookings@slotnest.ai";
 
 function manageBlock(token: string | undefined): string {
   if (!token) return "";
@@ -131,7 +131,7 @@ export async function sendOwnerNotification(args: OwnerNotifyArgs) {
         <h2>New booking 🎉</h2>
         <p><strong>${escapeHtml(args.clientName)}</strong> booked
            <strong>${escapeHtml(args.serviceName)}</strong> for <strong>${when}</strong>.</p>
-        <p>View it in your FlowBookAI calendar.</p>
+        <p>View it in your Slotnest calendar.</p>
       </div>`,
   });
   return error ? { error: error.message } : { ok: true };

@@ -12,7 +12,7 @@ export default async function ProfilePage() {
     getSettings(profile.id),
   ]);
 
-  let email = "demo@flowbook.ai";
+  let email = "demo@slotnest.ai";
   if (!DEV_MOCK) {
     const supabase = await createClient();
     const {
