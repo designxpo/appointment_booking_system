@@ -68,7 +68,7 @@ body {
   }
   /* Subtle outlined pill used as a secondary CTA / nav action. */
   .btn-outline {
-    @apply btn rounded-full border border-white/12 bg-white/5 px-5 py-2.5 text-gray-200 backdrop-blur hover:border-white/20 hover:bg-white/10;
+    @apply btn rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-gray-200 backdrop-blur hover:border-white/20 hover:bg-white/10;
   }
   /* Small label pill above section headings. */
   .badge-pill {
@@ -99,8 +99,10 @@ body {
     background-size: 48px 48px;
   }
   /* Card with a 1px translucent border + glassy raised fill. */
+  /* Off-scale opacities (/8, 0.03) aren't valid in @apply — set them in raw CSS. */
   .glass {
-    @apply border border-white/8 bg-white/[0.03] backdrop-blur;
+    @apply border border-white/10 backdrop-blur;
+    background-color: rgba(255, 255, 255, 0.03);
   }
   /* Mask helper to fade marquees / grids at their edges. */
   .mask-fade-x {
