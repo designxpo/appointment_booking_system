@@ -87,14 +87,14 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.09);
     background-image:
       radial-gradient(
-        120% 85% at 50% 132%,
-        rgba(124, 121, 246, 0.32) 0%,
-        rgba(124, 121, 246, 0.09) 38%,
-        transparent 68%
+        125% 90% at 50% 130%,
+        rgba(139, 122, 255, 0.5) 0%,
+        rgba(124, 121, 246, 0.16) 40%,
+        transparent 70%
       ),
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.07) 0%,
+        rgba(255, 255, 255, 0.08) 0%,
         rgba(255, 255, 255, 0.02) 45%,
         rgba(255, 255, 255, 0.015) 100%
       );

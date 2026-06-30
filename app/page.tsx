@@ -4,16 +4,17 @@ import { PLANS, PLAN_ORDER } from "@/lib/plans";
 import { SiteNav } from "@/components/marketing/site-nav";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { DashboardMock } from "@/components/marketing/dashboard-mock";
+import { Bloom, Sparkle } from "@/components/marketing/decor";
 
 export default function HomePage() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-ink">
-      {/* Ambient background: faint grid + radial brand glows */}
+      {/* Ambient background: faint grid + vivid violet light blooms */}
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-grid opacity-60 [mask-image:radial-gradient(ellipse_at_top,#000_30%,transparent_75%)]" />
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand/20 blur-[130px]" />
-        <div className="absolute top-[60%] -left-40 h-[420px] w-[420px] rounded-full bg-indigo-500/10 blur-[130px]" />
-        <div className="absolute top-[120%] -right-40 h-[420px] w-[420px] rounded-full bg-violet-500/10 blur-[130px]" />
+        <div className="absolute inset-0 bg-grid opacity-50 [mask-image:radial-gradient(ellipse_at_top,#000_25%,transparent_72%)]" />
+        <Bloom className="-top-48 left-1/2 h-[560px] w-[900px] -translate-x-1/2" color="rgba(124,121,246,0.32)" blur={140} />
+        <Bloom className="top-[55%] -left-52 h-[480px] w-[480px]" color="rgba(99,102,241,0.16)" blur={140} />
+        <Bloom className="top-[110%] -right-52 h-[520px] w-[520px]" color="rgba(139,92,246,0.18)" blur={150} />
       </div>
 
       <SiteNav />
@@ -49,7 +50,13 @@ function Hero() {
         <div className="absolute right-[24%] top-[-180px] h-[420px] w-[2px] rotate-[24deg] bg-gradient-to-b from-white/40 to-transparent blur-[2px]" />
       </div>
 
-      <div className="mx-auto max-w-3xl text-center">
+      {/* Sparkle accents around the headline */}
+      <Sparkle className="left-[12%] top-[28%] hidden sm:block" size={20} />
+      <Sparkle className="right-[14%] top-[22%] hidden sm:block" size={14} />
+      <Sparkle className="left-[22%] top-[46%] hidden lg:block" size={12} />
+      <Sparkle className="right-[20%] top-[52%] hidden lg:block" size={18} />
+
+      <div className="relative mx-auto max-w-3xl text-center">
         <div className="flex justify-center animate-fade-up">
           <span className="badge-pill">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-glow" />
@@ -83,23 +90,29 @@ function Hero() {
         </p>
 
         {/* Headline stats — leads with the number of industries we tailor for */}
-        <div className="mx-auto mt-10 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02] animate-fade-up">
+        <div className="liquid-card is-quiet mx-auto mt-10 grid max-w-lg grid-cols-3 divide-x divide-white/8 animate-fade-up">
           {[
             { value: `${INDUSTRIES.length}+`, label: "Industries & niches" },
             { value: "24/7", label: "AI receptionist" },
             { value: "<5 min", label: "To go live" },
           ].map((s) => (
-            <div key={s.label} className="bg-ink/40 px-3 py-4 backdrop-blur">
-              <div className="text-2xl font-bold text-gradient-brand sm:text-3xl">{s.value}</div>
-              <div className="mt-1 text-[11px] text-gray-500">{s.label}</div>
+            <div key={s.label} className="px-4 py-5">
+              <div className="text-3xl font-bold text-gradient-brand">{s.value}</div>
+              <div className="mt-1 text-xs text-gray-400">{s.label}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Product mockup */}
+      {/* Product mockup floating on a vivid violet bloom */}
       <div className="relative mx-auto mt-16 max-w-5xl animate-fade-up">
-        <div aria-hidden className="absolute -inset-x-10 -top-10 bottom-0 -z-10 rounded-[40px] bg-brand/10 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -inset-x-24 -top-24 bottom-[-15%] -z-10">
+          <Bloom className="left-1/2 top-1/4 h-[70%] w-[80%] -translate-x-1/2" color="rgba(124,121,246,0.4)" blur={120} />
+          <Bloom className="left-1/2 bottom-0 h-[45%] w-[60%] -translate-x-1/2" color="rgba(139,92,246,0.45)" blur={100} />
+          <Bloom className="left-[20%] top-1/2 h-[40%] w-[35%] -translate-x-1/2" color="rgba(99,102,241,0.35)" blur={110} />
+        </div>
+        <Sparkle className="-left-2 top-8 hidden md:block" size={16} />
+        <Sparkle className="-right-3 top-1/3 hidden md:block" size={20} />
         <DashboardMock />
       </div>
     </section>
@@ -152,7 +165,13 @@ function Marquee({ items, reverse = false }: { items: typeof INDUSTRIES; reverse
 /* ── Features ──────────────────────────────────────────────────────────── */
 function Features() {
   return (
-    <section id="features" className="mt-32 scroll-mt-24 px-5 sm:px-8">
+    <section id="features" className="relative mt-32 scroll-mt-24 px-5 sm:px-8">
+      {/* Section light blooms behind the card grid */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <Bloom className="left-[15%] top-[35%] h-[440px] w-[440px]" color="rgba(124,121,246,0.16)" blur={150} />
+        <Bloom className="right-[10%] bottom-[10%] h-[460px] w-[460px]" color="rgba(139,92,246,0.16)" blur={150} />
+      </div>
+
       <SectionIntro
         badge="Features"
         title={<>Powerful features to simplify <br className="hidden sm:block" />your scheduling</>}
@@ -203,7 +222,9 @@ function Features() {
         {/* Website builder — wide */}
         <FeatureCard className="lg:col-span-2" icon={<GlobeIcon />} title="Built-in booking website builder"
           body="Launch a branded site at yourname.slotnest.ai in minutes. Pick a theme, drop in your services, and start taking bookings — no developer needed.">
-          <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-ink-overlay/60">
+          <div className="relative mt-5">
+          <Bloom className="left-1/2 bottom-0 h-3/4 w-4/5 -translate-x-1/2" color="rgba(139,92,246,0.4)" blur={55} />
+          <div className="relative overflow-hidden rounded-xl border border-white/10 bg-ink-overlay/70">
             <div className="flex items-center gap-1.5 border-b border-white/8 px-3 py-2">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
@@ -221,6 +242,7 @@ function Features() {
               </div>
               <div className="rounded-lg bg-gradient-to-br from-brand/30 to-violet-500/10" />
             </div>
+          </div>
           </div>
         </FeatureCard>
       </div>
@@ -245,7 +267,10 @@ const STEPS = [
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="mt-32 scroll-mt-24 px-5 sm:px-8">
+    <section id="how-it-works" className="relative mt-32 scroll-mt-24 px-5 sm:px-8">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <Bloom className="left-1/2 top-1/3 h-[400px] w-[700px] -translate-x-1/2" color="rgba(124,121,246,0.14)" blur={150} />
+      </div>
       <SectionIntro
         badge="Work Process"
         title={<>Getting started with <br className="hidden sm:block" />Slotnest</>}
@@ -285,7 +310,11 @@ const TESTIMONIALS = [
 
 function Testimonials() {
   return (
-    <section id="testimonials" className="mt-32 scroll-mt-24 px-5 sm:px-8">
+    <section id="testimonials" className="relative mt-32 scroll-mt-24 px-5 sm:px-8">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <Bloom className="right-[12%] top-1/4 h-[420px] w-[420px]" color="rgba(139,92,246,0.14)" blur={150} />
+        <Bloom className="left-[8%] bottom-[10%] h-[380px] w-[380px]" color="rgba(99,102,241,0.12)" blur={150} />
+      </div>
       <SectionIntro
         badge="Testimonials"
         title="Loved by busy professionals"
@@ -313,7 +342,11 @@ function Testimonials() {
 /* ── Pricing ───────────────────────────────────────────────────────────── */
 function Pricing() {
   return (
-    <section id="pricing" className="mt-32 scroll-mt-24 px-5 sm:px-8">
+    <section id="pricing" className="relative mt-32 scroll-mt-24 px-5 sm:px-8">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        {/* Bloom centered on the highlighted plan */}
+        <Bloom className="left-1/2 top-1/3 h-[480px] w-[560px] -translate-x-1/2" color="rgba(124,121,246,0.2)" blur={140} />
+      </div>
       <SectionIntro
         badge="Pricing"
         title="Simple, transparent pricing"
@@ -373,9 +406,15 @@ function Pricing() {
 function CtaBand() {
   return (
     <section className="mt-32 px-5 sm:px-8">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-brand/15 to-ink-raised px-6 py-16 text-center">
-        <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[600px] -translate-x-1/2 rounded-full bg-brand/25 blur-[120px]" />
-        <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
+      <div className="relative isolate mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-brand/15 to-ink-raised px-6 py-16 text-center">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <Bloom className="-top-28 left-1/2 h-80 w-[640px] -translate-x-1/2" color="rgba(124,121,246,0.5)" blur={120} />
+          <Bloom className="bottom-[-30%] left-1/2 h-72 w-[520px] -translate-x-1/2" color="rgba(139,92,246,0.4)" blur={110} />
+        </div>
+        <Sparkle className="left-[14%] top-10 hidden sm:block" size={18} />
+        <Sparkle className="right-[16%] top-16 hidden sm:block" size={14} />
+        <Sparkle className="right-[24%] bottom-12 hidden sm:block" size={20} />
+        <h2 className="relative mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
           Ready to never miss a booking again?
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-base text-gray-400">
