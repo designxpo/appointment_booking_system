@@ -48,12 +48,20 @@ export async function middleware(request: NextRequest) {
   // 2) Auth guard for the dashboard.
   if (DEV_MOCK) return NextResponse.next({ request });
 
-  let response = NextResponse.next({ request });
+  // Middleware runs on EVERY route, so it must never throw — otherwise a single
+  // failure 500s the whole site (including public/marketing pages). If Supabase
+  // isn't configured, or the auth backend is unreachable, fail open: let the
+  // request through. Dashboard pages still gate themselves server-side.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.next({ request });
+  }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    let response = NextResponse.next({ request });
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -68,20 +76,23 @@ export async function middleware(request: NextRequest) {
           );
         },
       },
-    },
-  );
+    });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user && pathname.startsWith("/dashboard")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    if (!user && pathname.startsWith("/dashboard")) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+
+    return response;
+  } catch {
+    // Auth backend misconfigured/unreachable — don't break public routes.
+    return NextResponse.next({ request });
   }
-
-  return response;
 }
 
 export const config = {
