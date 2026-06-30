@@ -37,10 +37,16 @@ export default function HomePage() {
 function Hero() {
   return (
     <section className="relative px-5 pt-32 sm:px-8 sm:pt-36">
-      {/* Spotlight beams from the top */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[480px] overflow-hidden">
-        <div className="absolute left-[20%] top-[-260px] h-[520px] w-[120px] -rotate-[28deg] bg-gradient-to-b from-white/15 to-transparent blur-2xl" />
-        <div className="absolute right-[22%] top-[-260px] h-[520px] w-[120px] rotate-[28deg] bg-gradient-to-b from-white/12 to-transparent blur-2xl" />
+      {/* Spotlight beams + halo from the top */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[640px] overflow-hidden">
+        {/* central soft halo */}
+        <div className="absolute left-1/2 top-[-220px] h-[440px] w-[720px] -translate-x-1/2 rounded-full bg-brand/25 blur-[120px]" />
+        {/* two bright converging light beams */}
+        <div className="absolute left-[16%] top-[-320px] h-[680px] w-[200px] -rotate-[24deg] bg-gradient-to-b from-white/30 via-brand/15 to-transparent blur-3xl" />
+        <div className="absolute right-[16%] top-[-320px] h-[680px] w-[200px] rotate-[24deg] bg-gradient-to-b from-white/25 via-brand/15 to-transparent blur-3xl" />
+        {/* thin crisp highlight streaks for the "light leak" feel */}
+        <div className="absolute left-[24%] top-[-180px] h-[420px] w-[2px] -rotate-[24deg] bg-gradient-to-b from-white/50 to-transparent blur-[2px]" />
+        <div className="absolute right-[24%] top-[-180px] h-[420px] w-[2px] rotate-[24deg] bg-gradient-to-b from-white/40 to-transparent blur-[2px]" />
       </div>
 
       <div className="mx-auto max-w-3xl text-center">
@@ -75,6 +81,20 @@ function Hero() {
         <p className="mt-4 text-xs text-gray-500 animate-fade-up">
           Free plan forever · No card required · Live in minutes
         </p>
+
+        {/* Headline stats — leads with the number of industries we tailor for */}
+        <div className="mx-auto mt-10 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/[0.02] animate-fade-up">
+          {[
+            { value: `${INDUSTRIES.length}+`, label: "Industries & niches" },
+            { value: "24/7", label: "AI receptionist" },
+            { value: "<5 min", label: "To go live" },
+          ].map((s) => (
+            <div key={s.label} className="bg-ink/40 px-3 py-4 backdrop-blur">
+              <div className="text-2xl font-bold text-gradient-brand sm:text-3xl">{s.value}</div>
+              <div className="mt-1 text-[11px] text-gray-500">{s.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Product mockup */}
@@ -88,30 +108,44 @@ function Hero() {
 
 /* ── Industries trust strip ────────────────────────────────────────────── */
 function IndustriesStrip() {
-  const items = INDUSTRIES.slice(0, 18);
-  const loop = [...items, ...items];
+  // Two offset rows scrolling opposite directions to show the breadth.
+  const half = Math.ceil(INDUSTRIES.length / 2);
+  const rowA = INDUSTRIES.slice(0, half);
+  const rowB = INDUSTRIES.slice(half);
   return (
     <section id="industries" className="mt-24 scroll-mt-24 px-5 sm:px-8">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-center text-sm text-gray-500">
-          Trusted across <span className="text-gray-300">{INDUSTRIES.length}+ industries</span> — from
-          clinics to studios to home services
+      <div className="mx-auto max-w-6xl text-center">
+        <div className="text-5xl font-bold tracking-tight text-gradient-brand sm:text-6xl">
+          {INDUSTRIES.length}+
+        </div>
+        <p className="mx-auto mt-2 max-w-md text-sm text-gray-400">
+          industries &amp; niches tailored out of the box — from clinics and salons to
+          law firms, studios, and home services. Labels, services, and AI tone adapt
+          to each.
         </p>
-        <div className="mask-fade-x relative mt-8 overflow-hidden">
-          <div className="flex w-max gap-3 animate-marquee">
-            {loop.map((i, idx) => (
-              <span
-                key={`${i.id}-${idx}`}
-                className="glass flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm text-gray-300"
-              >
-                <span className="text-base">{i.icon}</span>
-                {i.name}
-              </span>
-            ))}
-          </div>
+
+        <div className="mask-fade-x relative mt-10 space-y-3 overflow-hidden">
+          <Marquee items={[...rowA, ...rowA]} />
+          <Marquee items={[...rowB, ...rowB]} reverse />
         </div>
       </div>
     </section>
+  );
+}
+
+function Marquee({ items, reverse = false }: { items: typeof INDUSTRIES; reverse?: boolean }) {
+  return (
+    <div className={`flex w-max gap-3 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}>
+      {items.map((i, idx) => (
+        <span
+          key={`${i.id}-${idx}`}
+          className="glass flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm text-gray-300"
+        >
+          <span className="text-base">{i.icon}</span>
+          {i.name}
+        </span>
+      ))}
+    </div>
   );
 }
 
@@ -219,8 +253,8 @@ function HowItWorks() {
       />
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((s) => (
-          <div key={s.n} className="group relative overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-6 transition-colors hover:border-brand/30">
-            <div aria-hidden className="absolute -right-6 -top-6 text-7xl font-bold text-white/[0.04]">{s.n}</div>
+          <div key={s.n} className="liquid-card is-quiet p-6">
+            <div aria-hidden className="absolute -right-6 -top-6 text-7xl font-bold text-white/[0.05]">{s.n}</div>
             <div className="flex items-center justify-between">
               <span className="page-icon">{s.icon}</span>
               <span className="text-xs font-medium text-brand">Step {s.n}</span>
@@ -259,7 +293,7 @@ function Testimonials() {
       />
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <figure key={t.name} className="flex flex-col rounded-2xl border border-white/8 bg-white/[0.03] p-6">
+          <figure key={t.name} className="liquid-card is-quiet flex flex-col p-6">
             <Stars />
             <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-gray-300">“{t.quote}”</blockquote>
             <figcaption className="mt-5 flex items-center gap-3">
@@ -292,10 +326,8 @@ function Pricing() {
           return (
             <div
               key={tier}
-              className={`relative flex flex-col rounded-2xl border p-6 ${
-                popular
-                  ? "border-brand/50 bg-gradient-to-b from-brand/12 to-transparent shadow-glow"
-                  : "border-white/8 bg-white/[0.03]"
+              className={`liquid-card relative flex flex-col p-6 ${
+                popular ? "border-brand/50 shadow-glow" : "is-quiet"
               }`}
             >
               {popular && (
@@ -392,8 +424,7 @@ function FeatureCard({
   children?: React.ReactNode;
 }) {
   return (
-    <div className={`group relative overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] p-6 transition-colors hover:border-brand/30 ${className}`}>
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 -bottom-20 h-40 bg-brand/10 blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+    <div className={`liquid-card p-6 ${className}`}>
       <span className="page-icon">{icon}</span>
       <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-400">{body}</p>
@@ -404,7 +435,7 @@ function FeatureCard({
 
 function MiniFeature({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-6">
+    <div className="liquid-card is-quiet p-6">
       <span className="page-icon">{icon}</span>
       <h3 className="mt-4 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-400">{body}</p>

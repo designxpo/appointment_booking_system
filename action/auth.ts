@@ -15,7 +15,9 @@ import { DEV_MOCK } from "@/lib/env";
  */
 
 export async function signUp(formData: FormData) {
-  if (DEV_MOCK) redirect("/dashboard");
+  // In mock mode skip email verification and drop the user straight into
+  // onboarding, so the industry-tailoring flow is part of the demo.
+  if (DEV_MOCK) redirect("/onboarding");
 
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");

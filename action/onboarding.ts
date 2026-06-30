@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { onboardingSchema } from "@/lib/validation";
 import { getRole } from "@/lib/industries";
+import { DEV_MOCK } from "@/lib/env";
 
 /**
  * Completes onboarding: creates the profile row and seeds default services,
@@ -11,6 +12,10 @@ import { getRole } from "@/lib/industries";
  * Requires a verified, authenticated user.
  */
 export async function completeOnboarding(formData: FormData) {
+  // Mock mode has no backend — the dashboard renders sample data, so just
+  // finish the flow and land on it.
+  if (DEV_MOCK) redirect("/dashboard");
+
   const supabase = await createClient();
   const {
     data: { user },

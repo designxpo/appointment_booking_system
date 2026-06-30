@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { INDUSTRIES } from "@/lib/industries";
 import { completeOnboarding } from "@/action/onboarding";
+import { Logo } from "@/components/marketing/logo";
 
 export default function OnboardingPage() {
   const [step, setStep] = useState<1 | 2>(1);
@@ -29,13 +30,16 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="flex min-h-screen">
+    <main className="relative flex min-h-screen overflow-hidden">
+      {/* Ambient brand glow to match the marketing theme */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -top-32 left-1/3 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-brand/15 blur-[130px]" />
+      </div>
+
       {/* ── Left panel ────────────────────────────────────────── */}
       <aside className="hidden w-[380px] shrink-0 flex-col justify-between border-r border-ink-border p-10 lg:flex">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white">
-            F
-          </div>
+        <div className="flex items-center gap-2.5">
+          <Logo className="h-8 w-8" />
           <span className="text-lg font-bold text-white">Slotnest</span>
         </div>
         <div>
