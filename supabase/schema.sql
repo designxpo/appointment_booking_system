@@ -210,15 +210,6 @@ create table if not exists public.website_data (
   updated_at      timestamptz not null default now()
 );
 
--- Realtime: let the dashboard subscribe to live changes (AI bookings appear
--- on the calendar without a manual refresh).
-do $$ begin
-  alter publication supabase_realtime add table public.appointments;
-exception when duplicate_object then null; end $$;
-do $$ begin
-  alter publication supabase_realtime add table public.leads;
-exception when duplicate_object then null; end $$;
-
 -- ── Leads / Clients (CRM) ──────────────────────────────────────────────────────
 -- Every person who interacts is captured as a lead, whether or not they book.
 -- Booking links the lead to its appointment(s). Per-industry the UI calls these
@@ -249,6 +240,16 @@ create unique index if not exists leads_clinic_email_uq
 -- Link appointments back to the lead that produced them (optional).
 alter table public.appointments
   add column if not exists lead_id uuid references public.leads (id) on delete set null;
+
+-- Realtime: let the dashboard subscribe to live changes (AI bookings appear on
+-- the calendar without a manual refresh). Declared here, after both tables
+-- exist, so a fresh run doesn't reference a not-yet-created table.
+do $$ begin
+  alter publication supabase_realtime add table public.appointments;
+exception when duplicate_object then null; end $$;
+do $$ begin
+  alter publication supabase_realtime add table public.leads;
+exception when duplicate_object then null; end $$;
 
 -- ── Payments ledger ────────────────────────────────────────────────────────────
 -- Every verified on-chain subscription payment, append-only. The UNIQUE tx_hash
