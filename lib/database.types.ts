@@ -156,6 +156,9 @@ export interface Database {
           widget_color: string;
           welcome_message: string;
           session_duration_minutes: number;
+          ai_provider: string;
+          ai_api_key: string | null;
+          ai_model: string | null;
           updated_at: string;
         };
         Insert: {
@@ -166,6 +169,9 @@ export interface Database {
           widget_color?: string;
           welcome_message?: string;
           session_duration_minutes?: number;
+          ai_provider?: string;
+          ai_api_key?: string | null;
+          ai_model?: string | null;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["ai_configs"]["Insert"]>;

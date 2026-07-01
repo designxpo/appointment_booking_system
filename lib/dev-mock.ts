@@ -209,6 +209,9 @@ export const mockAiConfig: AiConfig = {
   welcome_message:
     "Welcome to Bright Smile Dental! I'm your AI booking assistant. How can I help you today?",
   session_duration_minutes: 30,
+  ai_provider: "slotnest",
+  ai_model: null,
+  has_api_key: false,
 };
 
 export const mockWebsite: WebsiteData = {

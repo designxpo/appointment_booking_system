@@ -112,6 +112,9 @@ export interface Settings {
   max_advance_days: number;
 }
 
+/** Which engine powers the AI receptionist: Slotnest-managed or the business's own key. */
+export type AiProvider = "slotnest" | "anthropic" | "openai" | "google";
+
 export interface AiConfig {
   clinic_id: string;
   instructions: string;
@@ -121,6 +124,11 @@ export interface AiConfig {
   /** First message the visitor sees when the widget opens. */
   welcome_message: string;
   session_duration_minutes: number;
+  /** BYO AI key (paid feature). The raw key is NEVER sent to the client. */
+  ai_provider: AiProvider;
+  ai_model: string | null;
+  /** Whether a custom key is stored (so the UI can show "saved" without the key). */
+  has_api_key: boolean;
 }
 
 /** Section visibility flags for the public site builder. */

@@ -11,6 +11,8 @@ import {
 import { settingsFromRow } from "@/lib/settings-map";
 import { getLabels } from "@/lib/industries";
 import { bookAppointment } from "@/action/appointments";
+import { effectiveTier } from "@/lib/subscription";
+import { canUseCustomAiKey } from "@/lib/plans";
 import type { AiConfig, Settings } from "@/lib/types";
 
 /**
@@ -50,7 +52,7 @@ export async function receptionistTurn(args: {
     await Promise.all([
       admin
         .from("profiles")
-        .select("business_name, industry, role")
+        .select("business_name, industry, role, plan, trial_ends_at, plan_expires_at")
         .eq("id", args.clinicId)
         .single(),
       admin.from("ai_configs").select("*").eq("clinic_id", args.clinicId).single(),
@@ -78,6 +80,9 @@ export async function receptionistTurn(args: {
     widget_color: cfg.widget_color,
     welcome_message: cfg.welcome_message ?? "",
     session_duration_minutes: cfg.session_duration_minutes,
+    ai_provider: (cfg.ai_provider as AiConfig["ai_provider"]) ?? "slotnest",
+    ai_model: cfg.ai_model ?? null,
+    has_api_key: Boolean(cfg.ai_api_key),
   };
   const settings = settingsFromRow(args.clinicId, setRow);
   const timezone = args.timezone || settings.timezone || "UTC";
@@ -91,7 +96,16 @@ export async function receptionistTurn(args: {
     now: new Date().toISOString(),
   });
 
-  const anthropic = getAnthropic();
+  // Bring-your-own-key: if the clinic set their own Anthropic key AND their plan
+  // allows it, run replies on their key + chosen model. Otherwise use the
+  // Slotnest-managed engine.
+  const useOwnKey =
+    cfg.ai_provider === "anthropic" &&
+    Boolean(cfg.ai_api_key) &&
+    canUseCustomAiKey(effectiveTier(profile));
+  const anthropic = getAnthropic(useOwnKey ? (cfg.ai_api_key as string) : undefined);
+  const model = useOwnKey && cfg.ai_model ? cfg.ai_model : AI_MODEL;
+
   const convo: Anthropic.MessageParam[] = args.messages.map((m) => ({
     role: m.role,
     content: m.content,
@@ -101,7 +115,7 @@ export async function receptionistTurn(args: {
 
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
     const res = await anthropic.messages.create({
-      model: AI_MODEL,
+      model,
       max_tokens: 1024,
       system,
       tools: RECEPTIONIST_TOOLS,

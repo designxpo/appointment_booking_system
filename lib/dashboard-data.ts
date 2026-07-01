@@ -177,6 +177,10 @@ export async function getAiConfig(clinicId: string): Promise<AiConfig> {
     widget_color: data?.widget_color ?? "#6366f1",
     welcome_message: data?.welcome_message ?? "",
     session_duration_minutes: data?.session_duration_minutes ?? 30,
+    // BYO AI key: expose provider/model + whether a key is set, never the key.
+    ai_provider: (data?.ai_provider as AiConfig["ai_provider"]) ?? "slotnest",
+    ai_model: data?.ai_model ?? null,
+    has_api_key: Boolean(data?.ai_api_key),
   };
 }
 

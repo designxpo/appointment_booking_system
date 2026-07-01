@@ -7,7 +7,13 @@ import { aiEnv } from "@/lib/env";
  */
 let _client: Anthropic | null = null;
 
-export function getAnthropic(): Anthropic {
+/**
+ * Returns an Anthropic client. With no argument it uses the platform key
+ * (cached). Pass a `customKey` to run on a business's own Anthropic key
+ * ("bring your own key" — a paid feature); those clients are not cached.
+ */
+export function getAnthropic(customKey?: string): Anthropic {
+  if (customKey) return new Anthropic({ apiKey: customKey });
   if (!_client) {
     _client = new Anthropic({ apiKey: aiEnv.apiKey });
   }

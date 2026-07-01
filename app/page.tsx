@@ -182,7 +182,7 @@ function Features() {
       <div className="mx-auto mt-14 grid max-w-6xl gap-4 lg:grid-cols-3">
         {/* AI Receptionist — wide */}
         <FeatureCard className="lg:col-span-2" icon={<BotIcon />} title="AI receptionist that books for you"
-          body="Entropy, powered by Anthropic Claude, chats with clients in natural language, answers questions, and books real appointments — no forms, no phone tag.">
+          body="Entropy, our advanced conversational AI, chats with clients in natural language, answers questions, and books real appointments — no forms, no phone tag.">
           <div className="mt-5 space-y-2">
             <div className="ml-auto w-fit max-w-[80%] rounded-2xl rounded-br-sm bg-white/10 px-3 py-2 text-xs text-gray-200">
               Do you have anything Friday afternoon?

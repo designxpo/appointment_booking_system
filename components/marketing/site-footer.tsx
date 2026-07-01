@@ -68,10 +68,7 @@ export function SiteFooter() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-xs text-gray-500 sm:flex-row sm:px-8">
         <div aria-hidden className="hairline absolute inset-x-5 top-0 sm:inset-x-8" />
         <span>© {new Date().getFullYear()} Slotnest. All rights reserved.</span>
-        <span className="flex items-center gap-1.5">
-          Powered by
-          <span className="font-medium text-gray-400">Anthropic Claude</span>
-        </span>
+        <span className="text-gray-600">Made in India 🇮🇳</span>
       </div>
     </footer>
   );
