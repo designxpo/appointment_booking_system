@@ -1,15 +1,12 @@
 import { requireProfile } from "@/lib/get-profile";
 import { getAiConfig } from "@/lib/dashboard-data";
 import { AiSettingsHub } from "@/components/ai-settings-hub";
-import { effectiveTier } from "@/lib/subscription";
-import { canUseCustomAiKey } from "@/lib/plans";
 import { IconBot } from "@/components/icons";
 
 export default async function AiPage() {
   const { profile } = await requireProfile();
   const config = await getAiConfig(profile.id);
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  const canUseKey = canUseCustomAiKey(effectiveTier(profile));
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -24,7 +21,7 @@ export default async function AiPage() {
           </p>
         </div>
       </div>
-      <AiSettingsHub clinicId={profile.id} initial={config} appUrl={appUrl} canUseKey={canUseKey} />
+      <AiSettingsHub clinicId={profile.id} initial={config} appUrl={appUrl} />
     </div>
   );
 }

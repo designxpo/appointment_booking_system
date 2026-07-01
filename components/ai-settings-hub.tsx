@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { saveAiConfig } from "@/action/ai-config";
-import { AiKeySettings } from "@/components/ai-key-settings";
 import { IconBot, IconCode, IconCopy, IconExternal } from "@/components/icons";
 import type { AiConfig } from "@/lib/types";
 
@@ -35,12 +34,10 @@ export function AiSettingsHub({
   clinicId,
   initial,
   appUrl,
-  canUseKey,
 }: {
   clinicId: string;
   initial: AiConfig;
   appUrl: string;
-  canUseKey: boolean;
 }) {
   const [d, setD] = useState(initial);
   const [status, setStatus] = useState<string | null>(null);
@@ -282,14 +279,6 @@ export function AiSettingsHub({
           </div>
         </div>
       </section>
-
-      {/* ── AI engine (bring your own key) ─────────────────────── */}
-      <AiKeySettings
-        canUseKey={canUseKey}
-        provider={initial.ai_provider}
-        model={initial.ai_model}
-        hasKey={initial.has_api_key}
-      />
 
       {/* ── FAQ responses ─────────────────────────────────────── */}
       <section className="card">

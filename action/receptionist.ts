@@ -11,8 +11,6 @@ import {
 import { settingsFromRow } from "@/lib/settings-map";
 import { getLabels } from "@/lib/industries";
 import { bookAppointment } from "@/action/appointments";
-import { effectiveTier } from "@/lib/subscription";
-import { canUseCustomAiKey } from "@/lib/plans";
 import type { AiConfig, Settings } from "@/lib/types";
 
 /**
@@ -52,7 +50,7 @@ export async function receptionistTurn(args: {
     await Promise.all([
       admin
         .from("profiles")
-        .select("business_name, industry, role, plan, trial_ends_at, plan_expires_at")
+        .select("business_name, industry, role")
         .eq("id", args.clinicId)
         .single(),
       admin.from("ai_configs").select("*").eq("clinic_id", args.clinicId).single(),
@@ -97,15 +95,8 @@ export async function receptionistTurn(args: {
     now: new Date().toISOString(),
   });
 
-  // Bring-your-own-key: if the clinic set their own Anthropic key AND their plan
-  // allows it, run replies on their key + chosen model. Otherwise use the
-  // Slotnest-managed engine.
-  const useOwnKey =
-    cfg.ai_provider === "anthropic" &&
-    Boolean(cfg.ai_api_key) &&
-    canUseCustomAiKey(effectiveTier(profile));
-  const anthropic = getAnthropic(useOwnKey ? (cfg.ai_api_key as string) : undefined);
-  const model = useOwnKey && cfg.ai_model ? cfg.ai_model : AI_MODEL;
+  const anthropic = getAnthropic();
+  const model = AI_MODEL;
 
   const convo: Anthropic.MessageParam[] = args.messages.map((m) => ({
     role: m.role,

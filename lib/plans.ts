@@ -65,7 +65,6 @@ export const DEFAULT_PLANS: Record<PlanTier, Plan> = {
       "5,000 appointments / month",
       "Everything in Starter",
       "Custom AI tone & scripts",
-      "Bring your own AI key",
       "Analytics & insights",
       "Priority support",
     ],
@@ -81,7 +80,6 @@ export const DEFAULT_PLANS: Record<PlanTier, Plan> = {
     features: [
       "Unlimited appointments",
       "Everything in Professional",
-      "Bring your own AI key",
       "Multiple staff & locations",
       "Dedicated onboarding",
       "SLA & account manager",
@@ -119,14 +117,6 @@ export function formatInr(amount: number): string {
 
 export function canUseWebsiteBuilder(tier: PlanTier): boolean {
   return DEFAULT_PLANS[tier].websiteBuilder;
-}
-
-/**
- * "Bring your own AI key" is a Professional+ feature. Trial users get the
- * Professional effective tier, so they can use it during the trial.
- */
-export function canUseCustomAiKey(tier: PlanTier): boolean {
-  return tier === "professional" || tier === "enterprise";
 }
 
 export function isWithinAppointmentCap(
