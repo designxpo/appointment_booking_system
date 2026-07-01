@@ -37,7 +37,7 @@ export function PricingCards({ plans }: { plans: Plan[] }) {
         </span>
       </div>
 
-      <div className="mt-10 grid gap-4 lg:grid-cols-4">
+      <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((p) => {
           const popular = p.tier === "professional";
           const isFree = p.priceInr === 0;
@@ -85,7 +85,7 @@ export function PricingCards({ plans }: { plans: Plan[] }) {
                 href="/signup"
                 className={`mt-6 w-full justify-center ${popular ? "btn-gradient" : "btn-outline"}`}
               >
-                {isFree ? "Start free" : "Start free trial"}
+                Start free trial
               </Link>
             </div>
           );

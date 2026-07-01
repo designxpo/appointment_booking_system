@@ -13,10 +13,15 @@ describe("plans", () => {
     expect(canUseWebsiteBuilder("enterprise")).toBe(true);
   });
 
-  it("enforces the free appointment cap (50)", () => {
-    expect(isWithinAppointmentCap("free", 49)).toBe(true);
-    expect(isWithinAppointmentCap("free", 50)).toBe(false);
-    expect(isWithinAppointmentCap("free", 51)).toBe(false);
+  it("locks bookings on the free (no-subscription) state", () => {
+    // Free is no longer sold — it's the trial-ended/lapsed state (cap 0).
+    expect(DEFAULT_PLANS.free.appointmentCap).toBe(0);
+    expect(isWithinAppointmentCap("free", 0)).toBe(false);
+  });
+
+  it("enforces the Starter appointment cap (500)", () => {
+    expect(isWithinAppointmentCap("startup", 499)).toBe(true);
+    expect(isWithinAppointmentCap("startup", 500)).toBe(false);
   });
 
   it("treats enterprise (null cap) as unlimited", () => {

@@ -30,9 +30,10 @@ const SECTIONS: LegalSection[] = [
     ],
   },
   {
-    heading: "Plans, billing & cancellation",
+    heading: "Trial, plans, billing & cancellation",
     body: [
-      "Paid plans are billed monthly in USDT via your own wallet. Subscriptions renew when you make the next payment; if a plan lapses, the account is downgraded to the free tier. Because payments are made on-chain wallet-to-wallet, completed payments are generally non-refundable. You may stop using the service and cancel at any time.",
+      "New accounts include a 7-day free trial with full access — no card required. After the trial you must choose a paid plan to keep taking bookings.",
+      "Paid plans are priced in Indian Rupees (₹) and can be billed monthly or annually; prices shown exclude 18% GST. Your subscription runs for the period you pay for and is activated by our team. If a plan lapses without renewal, the account is paused until you subscribe again. You may cancel at any time; a cancellation stops future renewals and takes effect at the end of the current paid period.",
     ],
   },
   {

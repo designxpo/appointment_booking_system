@@ -1,6 +1,12 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { DEFAULT_PLANS, PLAN_ORDER, type Plan } from "@/lib/plans";
+import {
+  DEFAULT_PLANS,
+  PLAN_ORDER,
+  SELLABLE_TIERS,
+  HIDDEN_TIERS,
+  type Plan,
+} from "@/lib/plans";
 import type { PlanTier } from "@/lib/types";
 
 /**
@@ -11,7 +17,7 @@ import type { PlanTier } from "@/lib/types";
  * owner's live price/feature edits are reflected.
  */
 export async function getActivePlans(): Promise<Plan[]> {
-  const fallback = PLAN_ORDER.map((t) => DEFAULT_PLANS[t]);
+  const fallback = SELLABLE_TIERS.map((t) => DEFAULT_PLANS[t]);
   try {
     const admin = createAdminClient();
     const { data, error } = await admin
@@ -43,7 +49,7 @@ export interface PlanConfig extends Plan {
 export async function getAllPlanConfigs(): Promise<PlanConfig[]> {
   const fallback = PLAN_ORDER.map((t, i) => ({
     ...DEFAULT_PLANS[t],
-    isActive: true,
+    isActive: !HIDDEN_TIERS.has(t),
     sort: i,
   }));
   try {

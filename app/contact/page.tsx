@@ -6,7 +6,7 @@ import { ContactForm } from "@/components/marketing/contact-form";
 export const metadata: Metadata = {
   title: "Book a Call",
   description:
-    "Talk to the Slotnest team about automating your bookings, or start free in minutes.",
+    "Talk to the Slotnest team about automating your bookings, or start your free trial in minutes.",
 };
 
 const POINTS = [
@@ -26,7 +26,7 @@ export default function ContactPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-base text-gray-400">
             Tell us about your business and we&apos;ll show you how Slotnest can
-            run your front desk. Prefer to dive in? You can start free right now.
+            run your front desk. Prefer to dive in? Start your 7-day free trial right now.
           </p>
         </div>
 
@@ -52,10 +52,10 @@ export default function ContactPage() {
             <div className="rounded-2xl border border-brand/20 bg-gradient-to-b from-brand/10 to-transparent p-6">
               <div className="text-sm font-semibold text-white">Rather not wait?</div>
               <p className="mt-1 text-sm text-gray-400">
-                Create your account and have your AI receptionist live in minutes — free.
+                Create your account and have your AI receptionist live in minutes — free for 7 days.
               </p>
               <Link href="/signup" className="btn-gradient mt-4 w-full justify-center">
-                Start free
+                Start free trial
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" />
                   <path d="m13 6 6 6-6 6" />

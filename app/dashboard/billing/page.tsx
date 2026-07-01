@@ -32,11 +32,11 @@ export default async function BillingPage() {
         : sub.status === "expired"
           ? {
               tone: "rose" as const,
-              text: "Your subscription has ended — you're on the Free plan. Upgrade to restore paid features.",
+              text: "Your subscription has ended — bookings are paused. Pick a plan to continue.",
             }
           : {
-              tone: "muted" as const,
-              text: "You're on the Free plan. Upgrade any time to unlock more.",
+              tone: "rose" as const,
+              text: "Your free trial has ended — bookings are paused. Subscribe to keep taking appointments.",
             };
 
   const toneClass = {

@@ -24,21 +24,18 @@ export interface Plan {
 }
 
 export const DEFAULT_PLANS: Record<PlanTier, Plan> = {
+  // Not a sellable plan — the internal "no active subscription" state a business
+  // falls back to when its trial ends or a paid plan lapses. Locked (cap 0) so
+  // there's no free-forever usage; the customer must subscribe to continue.
   free: {
     tier: "free",
     name: "Free",
     priceInr: 0,
     priceInrYearly: 0,
-    appointmentCap: 50,
+    appointmentCap: 0,
     websiteBuilder: false,
-    tagline: "For trying Slotnest out",
-    features: [
-      "Up to 50 appointments / month",
-      "AI receptionist (Entropy)",
-      "Smart calendar & reminders",
-      "1 staff login",
-      "Email support",
-    ],
+    tagline: "No active subscription",
+    features: ["Trial ended — subscribe to keep taking bookings"],
   },
   startup: {
     tier: "startup",
@@ -96,6 +93,14 @@ export const PLAN_ORDER: PlanTier[] = [
   "professional",
   "enterprise",
 ];
+
+/** Tiers that aren't sold to customers ("free" is the locked no-subscription state). */
+export const HIDDEN_TIERS = new Set<PlanTier>(["free"]);
+
+/** Purchasable tiers, in display order. */
+export const SELLABLE_TIERS: PlanTier[] = PLAN_ORDER.filter(
+  (t) => !HIDDEN_TIERS.has(t),
+);
 
 /** The tier a paid upgrade defaults to / the trial grants. */
 export const TRIAL_TIER: PlanTier = "professional";

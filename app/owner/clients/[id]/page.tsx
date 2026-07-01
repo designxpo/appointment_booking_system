@@ -94,7 +94,7 @@ export default async function OwnerClientDetailPage({
                 / {cap === null ? "∞" : cap.toLocaleString("en-IN")} appointments
               </span>
             </div>
-            {cap !== null && (
+            {cap !== null && cap > 0 && (
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-overlay">
                 <div
                   className="h-full rounded-full bg-brand"
