@@ -105,7 +105,7 @@ export function SiteNav() {
               </a>
             ))}
           </div>
-          <div className="mt-3 flex flex-col gap-2 border-t border-white/8 pt-3">
+          <div className="mt-3 flex flex-col gap-2 border-t border-white/[0.06] pt-3">
             <Link href="/login" className="btn-outline w-full justify-center text-sm">
               Log in
             </Link>

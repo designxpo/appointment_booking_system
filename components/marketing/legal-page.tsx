@@ -26,7 +26,7 @@ export function LegalPage({
   return (
     <MarketingShell>
       <article className="mx-auto max-w-3xl px-5 pb-24 pt-16 sm:px-8 sm:pt-20">
-        <header className="border-b border-white/8 pb-8">
+        <header className="border-b border-white/[0.06] pb-8">
           <span className="badge-pill">Legal</span>
           <h1 className="mt-5 text-4xl font-semibold tracking-tight text-gradient sm:text-5xl">
             {title}
@@ -58,7 +58,7 @@ export function LegalPage({
           ))}
         </div>
 
-        <p className="mt-12 rounded-xl border border-white/8 bg-white/[0.03] p-4 text-xs leading-relaxed text-gray-500">
+        <p className="mt-12 rounded-xl border border-white/[0.05] bg-white/[0.03] p-4 text-xs leading-relaxed text-gray-500">
           This is a general template provided for convenience and is not legal
           advice. Review and adapt it with qualified counsel before relying on it
           for your business.

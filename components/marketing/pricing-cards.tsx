@@ -13,8 +13,9 @@ export function PricingCards({ plans }: { plans: Plan[] }) {
 
   return (
     <div className="mx-auto mt-10 max-w-6xl">
-      {/* Billing cycle toggle */}
-      <div className="flex items-center justify-center gap-3">
+      {/* Billing cycle toggle — centered, with the savings note stacked below so
+          it never pushes the toggle off-center. */}
+      <div className="flex flex-col items-center gap-2">
         <div className="inline-flex rounded-full border border-white/10 bg-white/5 p-1 text-sm backdrop-blur">
           {(["monthly", "yearly"] as const).map((c) => (
             <button
@@ -43,17 +44,19 @@ export function PricingCards({ plans }: { plans: Plan[] }) {
           const isFree = p.priceInr === 0;
           const price = cycle === "monthly" ? p.priceInr : p.priceInrYearly;
           return (
-            <div
-              key={p.tier}
-              className={`liquid-card relative flex flex-col p-6 ${
-                popular ? "border-brand/50 shadow-glow" : "is-quiet"
-              }`}
-            >
+            // Wrapper is NOT clipped, so the "Most popular" badge can sit above
+            // the card top (the liquid-card itself has overflow:hidden).
+            <div key={p.tier} className="relative">
               {popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-[11px] font-medium text-white">
+                <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand px-3 py-1 text-[11px] font-medium text-white shadow-lg shadow-brand/30">
                   Most popular
                 </span>
               )}
+              <div
+                className={`liquid-card flex h-full flex-col p-6 ${
+                  popular ? "border-brand/50 shadow-glow" : "is-quiet"
+                }`}
+              >
               <div className="text-sm font-semibold text-white">{p.name}</div>
               <p className="mt-1 text-xs text-gray-500">{p.tagline}</p>
               <div className="mt-3 flex items-end gap-1">
@@ -87,6 +90,7 @@ export function PricingCards({ plans }: { plans: Plan[] }) {
               >
                 Start free trial
               </Link>
+              </div>
             </div>
           );
         })}

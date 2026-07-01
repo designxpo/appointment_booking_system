@@ -7,20 +7,20 @@ import { Logo } from "./logo";
  */
 export function DashboardMock() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-ink-raised/90 shadow-lift backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-white/[0.05] bg-ink-raised/90 shadow-lift backdrop-blur-xl">
       {/* Top bar */}
-      <div className="flex items-center justify-between gap-3 border-b border-white/8 px-4 py-3">
+      <div className="flex items-center justify-between gap-3 px-4 py-3">
         <div className="flex items-center gap-2.5">
           <Logo className="h-5 w-5" />
           <span className="text-sm font-semibold text-white">Slotnest</span>
-          <span className="ml-1 hidden items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs text-gray-300 sm:inline-flex">
+          <span className="ml-1 hidden items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/5 px-2 py-1 text-xs text-gray-300 sm:inline-flex">
             <span className="grid h-4 w-4 place-items-center rounded bg-brand/30 text-[9px]">🦷</span>
             Bright Smile Dental
             <Chevron />
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-500 sm:flex">
+          <div className="hidden items-center gap-2 rounded-lg border border-white/[0.06] bg-white/5 px-3 py-1.5 text-xs text-gray-500 sm:flex">
             <Search /> Search…
           </div>
           <span className="chip bg-brand-muted text-brand">Pro</span>
@@ -30,7 +30,7 @@ export function DashboardMock() {
 
       <div className="grid lg:grid-cols-[190px_1fr]">
         {/* Sidebar */}
-        <aside className="hidden flex-col gap-1 border-r border-white/8 p-3 lg:flex">
+        <aside className="hidden flex-col gap-1 p-3 lg:flex">
           {[
             { icon: <GridIcon />, label: "Dashboard", active: true },
             { icon: <CalIcon />, label: "Appointments", active: false },
@@ -65,7 +65,7 @@ export function DashboardMock() {
         {/* Main */}
         <div className="space-y-3 p-4">
           {/* Metric + chart */}
-          <div className="rounded-xl border border-white/8 bg-ink-overlay/60 p-4">
+          <div className="rounded-xl bg-ink-overlay/60 p-4">
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-xs text-gray-400">Bookings this month</div>
@@ -80,7 +80,7 @@ export function DashboardMock() {
                 </div>
               </div>
               <div className="flex gap-1.5">
-                <span className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-gray-300">
+                <span className="rounded-md border border-white/[0.06] bg-white/5 px-2 py-1 text-[10px] text-gray-300">
                   6 months
                 </span>
                 <span className="rounded-md border border-brand/30 bg-brand/15 px-2 py-1 text-[10px] text-brand">
@@ -104,7 +104,7 @@ export function DashboardMock() {
               { label: "New leads", value: "312", delta: "+27%", up: true },
               { label: "AI chats", value: "1,204", delta: "24h", up: true },
             ].map((s) => (
-              <div key={s.label} className="rounded-xl border border-white/8 bg-ink-overlay/60 p-3">
+              <div key={s.label} className="rounded-xl bg-ink-overlay/60 p-3">
                 <div className="text-[11px] text-gray-400">{s.label}</div>
                 <div className="mt-1 text-lg font-semibold text-white">{s.value}</div>
                 <div className="mt-0.5 text-[10px] text-emerald-400">{s.delta}</div>
@@ -114,7 +114,7 @@ export function DashboardMock() {
 
           {/* Appointments + AI chat */}
           <div className="grid gap-3 lg:grid-cols-[1fr_240px]">
-            <div className="rounded-xl border border-white/8 bg-ink-overlay/60 p-4">
+            <div className="rounded-xl bg-ink-overlay/60 p-4">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-xs font-semibold text-white">Today&apos;s appointments</span>
                 <span className="text-[10px] text-gray-500">4 scheduled</span>

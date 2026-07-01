@@ -66,17 +66,17 @@ export function BillingPlans({
           const isFree = p.priceInr === 0;
           const popular = p.tier === "professional";
           return (
-            <div
-              key={p.tier}
-              className={`liquid-card relative flex flex-col p-5 ${
-                isCurrent ? "ring-2 ring-brand" : popular ? "border-brand/40" : ""
-              }`}
-            >
+            <div key={p.tier} className="relative">
               {isCurrent && (
-                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-brand px-2.5 py-0.5 text-[10px] font-medium text-white">
+                <span className="absolute -top-2.5 left-1/2 z-10 -translate-x-1/2 rounded-full bg-brand px-2.5 py-0.5 text-[10px] font-medium text-white shadow-lg shadow-brand/30">
                   Current
                 </span>
               )}
+              <div
+                className={`liquid-card flex h-full flex-col p-5 ${
+                  isCurrent ? "ring-2 ring-brand" : popular ? "border-brand/40" : ""
+                }`}
+              >
               <div className="text-sm font-semibold text-white">{p.name}</div>
               <div className="mt-2 flex items-end gap-1">
                 <span className="text-2xl font-bold text-white">
@@ -106,6 +106,7 @@ export function BillingPlans({
               >
                 {isCurrent ? "Current plan" : isFree ? "Free" : "Request upgrade"}
               </button>
+              </div>
             </div>
           );
         })}

@@ -93,7 +93,7 @@ function Hero() {
         </p>
 
         {/* Headline stats — leads with the number of industries we tailor for */}
-        <div className="liquid-card is-quiet mx-auto mt-10 grid max-w-lg grid-cols-3 divide-x divide-white/8 animate-fade-up">
+        <div className="liquid-card is-quiet mx-auto mt-10 grid max-w-lg grid-cols-3 divide-x divide-white/[0.05] animate-fade-up">
           {[
             { value: `${INDUSTRIES.length}+`, label: "Industries & niches" },
             { value: "24/7", label: "AI receptionist" },
@@ -225,8 +225,8 @@ function Features() {
           body="Launch a branded site at yourname.slotnest.ai in minutes. Pick a theme, drop in your services, and start taking bookings — no developer needed.">
           <div className="relative mt-5">
           <Bloom className="left-1/2 bottom-0 h-3/4 w-4/5 -translate-x-1/2" color="rgba(139,92,246,0.4)" blur={55} />
-          <div className="relative overflow-hidden rounded-xl border border-white/10 bg-ink-overlay/70">
-            <div className="flex items-center gap-1.5 border-b border-white/8 px-3 py-2">
+          <div className="relative overflow-hidden rounded-xl border border-white/[0.05] bg-ink-overlay/70">
+            <div className="flex items-center gap-1.5 px-3 py-2">
               <span className="h-2.5 w-2.5 rounded-full bg-rose-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
@@ -362,7 +362,7 @@ function Pricing({ plans }: { plans: Plan[] }) {
 function CtaBand() {
   return (
     <section className="mt-32 px-5 sm:px-8">
-      <div className="relative isolate mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-brand/15 to-ink-raised px-6 py-16 text-center">
+      <div className="relative isolate mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-b from-brand/15 to-ink-raised px-6 py-16 text-center">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <Bloom className="-top-28 left-1/2 h-80 w-[640px] -translate-x-1/2" color="rgba(124,121,246,0.5)" blur={120} />
           <Bloom className="bottom-[-30%] left-1/2 h-72 w-[520px] -translate-x-1/2" color="rgba(139,92,246,0.4)" blur={110} />

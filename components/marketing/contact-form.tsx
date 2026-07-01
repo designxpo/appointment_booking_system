@@ -34,7 +34,7 @@ export function ContactForm() {
   }
 
   return (
-    <form action={action} className="space-y-4 rounded-2xl border border-white/8 bg-white/[0.03] p-6 sm:p-8">
+    <form action={action} className="space-y-4 rounded-2xl border border-white/[0.05] bg-white/[0.03] p-6 sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="name" label="Your name" required>
           <input id="name" name="name" type="text" required maxLength={100} className="input" placeholder="Jane Smith" />
