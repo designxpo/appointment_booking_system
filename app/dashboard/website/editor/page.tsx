@@ -3,6 +3,7 @@ import { requireProfile } from "@/lib/get-profile";
 import { getWebsiteData } from "@/lib/dashboard-data";
 import { WebsiteEditor } from "@/components/website-editor";
 import { canUseWebsiteBuilder } from "@/lib/plans";
+import { effectiveTier } from "@/lib/subscription";
 
 export default async function WebsiteEditorPage() {
   const { profile } = await requireProfile();
@@ -25,7 +26,7 @@ export default async function WebsiteEditorPage() {
         clinicId={profile.id}
         subdomain={profile.subdomain}
         initial={website}
-        locked={!canUseWebsiteBuilder(profile.plan)}
+        locked={!canUseWebsiteBuilder(effectiveTier(profile))}
       />
     </div>
   );

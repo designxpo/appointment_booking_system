@@ -13,6 +13,7 @@ import {
 } from "@/lib/availability";
 import { zonedDateOf } from "@/lib/timezone";
 import { isWithinAppointmentCap } from "@/lib/plans";
+import { effectiveTier } from "@/lib/subscription";
 import {
   sendConfirmationEmail,
   sendCancellationEmail,
@@ -93,7 +94,7 @@ export async function bookAppointment(raw: unknown) {
 
   const { data: profile } = await admin
     .from("profiles")
-    .select("plan, business_name")
+    .select("plan, business_name, trial_ends_at, plan_expires_at")
     .eq("id", input.clinicId)
     .single();
   if (!profile) return { error: "Business not found." };
@@ -107,7 +108,7 @@ export async function bookAppointment(raw: unknown) {
     .eq("clinic_id", input.clinicId)
     .neq("status", "cancelled")
     .gte("created_at", monthStart.toISOString());
-  if (!isWithinAppointmentCap(profile.plan, count ?? 0)) {
+  if (!isWithinAppointmentCap(effectiveTier(profile), count ?? 0)) {
     return { error: "This business has reached its booking limit for the month." };
   }
 

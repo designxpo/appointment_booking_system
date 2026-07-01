@@ -46,23 +46,18 @@ export const aiEnv = {
   },
 };
 
-/** Crypto billing config. */
-export const billingEnv = {
-  get adminWallet() {
-    return requireEnv("NEXT_PUBLIC_ADMIN_USDT_WALLET");
+/**
+ * Support / sales contact used by the client "Request upgrade" flow (subscriptions
+ * are activated manually from the owner console). All optional with fallbacks.
+ */
+export const supportContact = {
+  /** Email upgrade requests are sent to. */
+  get email() {
+    return optionalEnv("NEXT_PUBLIC_SUPPORT_EMAIL") ?? "sales@slotnest.ai";
   },
-  get usdtContract() {
-    return requireEnv("NEXT_PUBLIC_USDT_CONTRACT_ADDRESS");
-  },
-  get chainId() {
-    return Number(optionalEnv("NEXT_PUBLIC_USDT_CHAIN_ID") ?? "137");
-  },
-  /** JSON-RPC endpoint used to verify USDT transfers on-chain. */
-  get rpcUrl() {
-    return optionalEnv("EVM_RPC_URL");
-  },
-  get usdtDecimals() {
-    return Number(optionalEnv("USDT_DECIMALS") ?? "6");
+  /** WhatsApp number in international format WITHOUT '+', e.g. 919876543210. */
+  get whatsapp() {
+    return optionalEnv("NEXT_PUBLIC_SUPPORT_WHATSAPP");
   },
 };
 

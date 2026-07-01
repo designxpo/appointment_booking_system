@@ -6,8 +6,9 @@ import { cronSecret } from "@/lib/env";
  * Subscription-expiry cron. Run daily:
  *   GET /api/cron/expire-plans  with  Authorization: Bearer <CRON_SECRET>
  *
- * Any paid plan whose plan_expires_at has passed is downgraded to free. A
- * renewal (another USDT payment) pushes plan_expires_at forward again.
+ * Any paid plan whose plan_expires_at has passed is downgraded to free. The
+ * owner extending/renewing the plan from the console pushes plan_expires_at
+ * forward again. Comped plans (plan_expires_at = null) are never downgraded.
  */
 export async function GET(request: NextRequest) {
   // Fail CLOSED in production when no secret is configured.

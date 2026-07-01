@@ -24,6 +24,8 @@ export interface Profile {
   plan: PlanTier;
   plan_started_at: string | null;
   plan_expires_at: string | null;
+  /** End of the 7-day free trial. While in the future the account gets full access. */
+  trial_ends_at: string | null;
   last_tx_hash: string | null;
   created_at: string;
 }

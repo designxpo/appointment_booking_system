@@ -3,6 +3,9 @@ import { Topbar } from "@/components/topbar";
 import { RealtimeRefresher } from "@/components/realtime-refresher";
 import { requireProfile } from "@/lib/get-profile";
 import { getRole } from "@/lib/industries";
+import { getSubscription, statusLabel } from "@/lib/subscription";
+import { isOwner } from "@/lib/owner";
+import { createClient } from "@/lib/supabase/server";
 import { DEV_MOCK } from "@/lib/dev-mock";
 
 export default async function DashboardLayout({
@@ -12,6 +15,17 @@ export default async function DashboardLayout({
 }) {
   const { profile, labels } = await requireProfile();
   const roleName = getRole(profile.industry, profile.role)?.name ?? "Business";
+  const sub = getSubscription(profile);
+
+  // Show the owner-console link only to super-admins.
+  let ownerAccess = DEV_MOCK;
+  if (!DEV_MOCK) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    ownerAccess = isOwner(user?.email);
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -19,7 +33,12 @@ export default async function DashboardLayout({
         businessName={profile.business_name}
         roleName={roleName}
         labels={labels}
-        plan={profile.plan}
+        planLabel={
+          sub.status === "trialing"
+            ? `Trial · ${sub.trialDaysLeft}d left`
+            : `${statusLabel(sub.status)} · ${sub.tier}`
+        }
+        isOwner={ownerAccess}
       />
       {/* Live updates: AI bookings/leads appear without manual refresh. */}
       <RealtimeRefresher clinicId={profile.id} enabled={!DEV_MOCK} />

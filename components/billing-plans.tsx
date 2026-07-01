@@ -1,90 +1,121 @@
 "use client";
 
 import { useState } from "react";
-import { PLANS, PLAN_ORDER } from "@/lib/plans";
-import { createPaymentIntent, activatePlan } from "@/action/billing";
-import { payWithUsdt } from "@/lib/metamask";
+import { formatInr, type Plan } from "@/lib/plans";
 import type { PlanTier } from "@/lib/types";
 
 /**
- * Two-step crypto checkout:
- *   1. Ask the server for a payment intent (unique exact amount, e.g. 19.37).
- *   2. Send exactly that amount via MetaMask, then submit the tx hash.
- * The unique amount is what proves THIS account made the payment.
+ * Client billing view. Subscriptions are activated manually by the Slotnest
+ * team (owner console), so a paid upgrade opens a pre-filled WhatsApp/email
+ * request rather than a self-serve checkout.
  */
-export function BillingPlans({ currentPlan }: { currentPlan: PlanTier }) {
-  const [busy, setBusy] = useState<PlanTier | null>(null);
-  const [status, setStatus] = useState<string | null>(null);
+export function BillingPlans({
+  plans,
+  currentTier,
+  storedPlan,
+  businessName,
+  supportEmail,
+  supportWhatsapp,
+}: {
+  plans: Plan[];
+  currentTier: PlanTier; // effective tier (accounts for trial)
+  storedPlan: PlanTier; // the plan stored on the profile
+  businessName: string;
+  supportEmail: string;
+  supportWhatsapp: string | null;
+}) {
+  const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly");
 
-  async function subscribe(tier: PlanTier) {
-    const plan = PLANS[tier];
-    if (plan.priceUsdt === 0) return;
-    setBusy(tier);
-    setStatus(null);
-    try {
-      const intent = await createPaymentIntent(tier);
-      if ("error" in intent && intent.error) throw new Error(intent.error);
-      if (!("intentId" in intent) || !intent.intentId || intent.amountUsdt == null) {
-        throw new Error("Could not start payment.");
-      }
-
-      setStatus(`Pay exactly ${intent.amountUsdt} USDT in MetaMask…`);
-      const txHash = await payWithUsdt(intent.amountUsdt);
-
-      setStatus("Verifying payment on-chain…");
-      const res = await activatePlan(intent.intentId, txHash);
-      setStatus(res?.error ? res.error : `Upgraded to ${plan.name} ✓`);
-    } catch (e) {
-      setStatus(e instanceof Error ? e.message : "Payment failed");
-    } finally {
-      setBusy(null);
-    }
+  function requestUpgrade(plan: Plan) {
+    const cycleLabel = cycle === "monthly" ? "monthly" : "yearly";
+    const message = `Hi Slotnest team, I'd like to upgrade "${businessName}" to the ${plan.name} plan (${cycleLabel} billing). Please help me activate it.`;
+    const url = supportWhatsapp
+      ? `https://wa.me/${supportWhatsapp}?text=${encodeURIComponent(message)}`
+      : `mailto:${supportEmail}?subject=${encodeURIComponent(
+          `Upgrade to ${plan.name} — ${businessName}`,
+        )}&body=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (
-    <div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-4">
-        {PLAN_ORDER.map((tier) => {
-          const p = PLANS[tier];
-          const isCurrent = tier === currentPlan;
+    <div className="mt-6">
+      {/* Billing cycle toggle */}
+      <div className="mb-5 flex items-center gap-3">
+        <div className="inline-flex rounded-full border border-ink-border bg-ink-raised p-1 text-sm">
+          {(["monthly", "yearly"] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => setCycle(c)}
+              className={`rounded-full px-4 py-1.5 font-medium capitalize transition-colors ${
+                cycle === c ? "bg-brand text-white" : "text-gray-400 hover:text-gray-200"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+        {cycle === "yearly" && (
+          <span className="text-xs font-medium text-emerald-300">2 months free</span>
+        )}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {plans.map((p) => {
+          const isCurrent = p.tier === currentTier;
+          const price = cycle === "monthly" ? p.priceInr : p.priceInrYearly;
+          const isFree = p.priceInr === 0;
+          const popular = p.tier === "professional";
           return (
             <div
-              key={tier}
-              className={`card flex flex-col ${isCurrent ? "ring-2 ring-brand" : ""}`}
+              key={p.tier}
+              className={`liquid-card relative flex flex-col p-5 ${
+                isCurrent ? "ring-2 ring-brand" : popular ? "border-brand/40" : ""
+              }`}
             >
-              <div className="font-semibold">{p.name}</div>
-              <div className="mt-1 text-2xl font-bold">
-                {p.priceUsdt === 0 ? "Free" : `$${p.priceUsdt}`}
-                {p.priceUsdt > 0 && (
-                  <span className="text-sm font-normal text-gray-500"> USDT/mo</span>
+              {isCurrent && (
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rounded-full bg-brand px-2.5 py-0.5 text-[10px] font-medium text-white">
+                  Current
+                </span>
+              )}
+              <div className="text-sm font-semibold text-white">{p.name}</div>
+              <div className="mt-2 flex items-end gap-1">
+                <span className="text-2xl font-bold text-white">
+                  {isFree ? "Free" : formatInr(price)}
+                </span>
+                {!isFree && (
+                  <span className="mb-1 text-xs text-gray-500">
+                    /{cycle === "monthly" ? "mo" : "yr"}
+                  </span>
                 )}
               </div>
-              <ul className="mt-3 flex-1 space-y-1 text-sm text-gray-600">
+              <p className="mt-1 text-xs text-gray-500">{p.tagline}</p>
+              <ul className="mt-4 flex-1 space-y-2 text-sm text-gray-300">
                 {p.features.map((f) => (
-                  <li key={f}>• {f}</li>
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-brand">✓</span>
+                    {f}
+                  </li>
                 ))}
               </ul>
               <button
-                disabled={isCurrent || p.priceUsdt === 0 || busy !== null}
-                onClick={() => subscribe(tier)}
-                className="btn-primary mt-4 disabled:opacity-50"
+                disabled={isCurrent || isFree}
+                onClick={() => requestUpgrade(p)}
+                className={`mt-5 w-full justify-center ${
+                  isCurrent || isFree ? "btn-outline opacity-50" : "btn-gradient"
+                }`}
               >
-                {isCurrent
-                  ? "Current plan"
-                  : p.priceUsdt === 0
-                    ? "Free"
-                    : busy === tier
-                      ? "Processing…"
-                      : "Pay with MetaMask"}
+                {isCurrent ? "Current plan" : isFree ? "Free" : "Request upgrade"}
               </button>
             </div>
           );
         })}
       </div>
-      {status && <p className="mt-4 text-sm text-gray-700">{status}</p>}
-      <p className="mt-2 text-xs text-gray-400">
-        Each upgrade uses a one-time exact amount (e.g. 19.37 USDT) so your
-        payment is matched to your account automatically.
+
+      <p className="mt-4 text-xs text-gray-500">
+        {storedPlan !== currentTier && currentTier === "professional"
+          ? "You currently have full access on your free trial. "
+          : ""}
+        Upgrades are activated by our team, usually within a few hours. Prices exclude 18% GST.
       </p>
     </div>
   );

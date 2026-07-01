@@ -2,6 +2,7 @@ import { requireProfile } from "@/lib/get-profile";
 import { getWebsiteData } from "@/lib/dashboard-data";
 import { WebsiteHub } from "@/components/website-hub";
 import { canUseWebsiteBuilder } from "@/lib/plans";
+import { effectiveTier } from "@/lib/subscription";
 import { IconGlobe } from "@/components/icons";
 
 export default async function WebsitePage() {
@@ -25,7 +26,7 @@ export default async function WebsitePage() {
         subdomain={profile.subdomain}
         theme={website.theme}
         isPublished={website.is_published}
-        isPaid={canUseWebsiteBuilder(profile.plan)}
+        isPaid={canUseWebsiteBuilder(effectiveTier(profile))}
       />
     </div>
   );

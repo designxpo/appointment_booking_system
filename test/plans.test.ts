@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { canUseWebsiteBuilder, isWithinAppointmentCap, PLANS } from "@/lib/plans";
+import {
+  canUseWebsiteBuilder,
+  isWithinAppointmentCap,
+  DEFAULT_PLANS,
+} from "@/lib/plans";
 
 describe("plans", () => {
   it("locks the website builder on free, unlocks on paid", () => {
@@ -16,7 +20,7 @@ describe("plans", () => {
   });
 
   it("treats enterprise (null cap) as unlimited", () => {
-    expect(PLANS.enterprise.appointmentCap).toBeNull();
+    expect(DEFAULT_PLANS.enterprise.appointmentCap).toBeNull();
     expect(isWithinAppointmentCap("enterprise", 1_000_000)).toBe(true);
   });
 });

@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { INDUSTRIES } from "@/lib/industries";
-import { PLANS, PLAN_ORDER } from "@/lib/plans";
+import { getActivePlans } from "@/lib/plans-data";
+import type { Plan } from "@/lib/plans";
 import { SiteNav } from "@/components/marketing/site-nav";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { DashboardMock } from "@/components/marketing/dashboard-mock";
+import { PricingCards } from "@/components/marketing/pricing-cards";
 import { Bloom, Sparkle } from "@/components/marketing/decor";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const plans = await getActivePlans();
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-ink">
       {/* Ambient background: faint grid + vivid violet light blooms */}
@@ -25,7 +28,7 @@ export default function HomePage() {
         <Features />
         <HowItWorks />
         <Testimonials />
-        <Pricing />
+        <Pricing plans={plans} />
         <CtaBand />
       </main>
 
@@ -71,22 +74,22 @@ function Hero() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-400 animate-fade-up sm:text-lg">
-          Slotnest answers your clients, checks live availability, and books
-          appointments around the clock — so you capture every lead while you
-          focus on the work that matters.
+          Slotnest answers your customers on WhatsApp and your website, checks
+          live availability, and books appointments around the clock — so you
+          capture every lead while you focus on the work that matters.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 animate-fade-up sm:flex-row">
           <Link href="/signup" className="btn-gradient w-full justify-center sm:w-auto">
-            Get Started
+            Start 7-day free trial
             <Arrow />
           </Link>
-          <a href="#how-it-works" className="btn-outline w-full justify-center sm:w-auto">
-            See how it works
+          <a href="#pricing" className="btn-outline w-full justify-center sm:w-auto">
+            See pricing
           </a>
         </div>
         <p className="mt-4 text-xs text-gray-500 animate-fade-up">
-          Free plan forever · No card required · Live in minutes
+          7-day free trial · No credit card · Built for Indian businesses
         </p>
 
         {/* Headline stats — leads with the number of industries we tailor for */}
@@ -338,7 +341,7 @@ function Testimonials() {
 }
 
 /* ── Pricing ───────────────────────────────────────────────────────────── */
-function Pricing() {
+function Pricing({ plans }: { plans: Plan[] }) {
   return (
     <section id="pricing" className="relative mt-32 scroll-mt-24 px-5 sm:px-8">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -347,55 +350,10 @@ function Pricing() {
       </div>
       <SectionIntro
         badge="Pricing"
-        title="Simple, transparent pricing"
-        subtitle="Start free, upgrade when you grow. Pay monthly in USDT via MetaMask — no contracts, cancel anytime."
+        title="Simple pricing in ₹, built for India"
+        subtitle="Start with a 7-day free trial — no card required. Pick monthly or save 2 months with annual. All prices exclude 18% GST."
       />
-      <div className="mx-auto mt-14 grid max-w-6xl gap-4 lg:grid-cols-4">
-        {PLAN_ORDER.map((tier) => {
-          const p = PLANS[tier];
-          const popular = tier === "professional";
-          return (
-            <div
-              key={tier}
-              className={`liquid-card relative flex flex-col p-6 ${
-                popular ? "border-brand/50 shadow-glow" : "is-quiet"
-              }`}
-            >
-              {popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-[11px] font-medium text-white">
-                  Most popular
-                </span>
-              )}
-              <div className="text-sm font-semibold text-white">{p.name}</div>
-              <div className="mt-3 flex items-end gap-1">
-                <span className="text-4xl font-bold tracking-tight text-white">
-                  {p.priceUsdt === 0 ? "Free" : `$${p.priceUsdt}`}
-                </span>
-                {p.priceUsdt > 0 && <span className="mb-1.5 text-sm text-gray-500">/mo USDT</span>}
-              </div>
-              <div className="mt-1 text-xs text-gray-500">
-                {p.appointmentCap === null
-                  ? "Unlimited appointments"
-                  : `Up to ${p.appointmentCap.toLocaleString()} appointments/mo`}
-              </div>
-              <ul className="mt-5 flex-1 space-y-2.5">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                    <span className="mt-0.5 text-brand"><Check /></span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/signup"
-                className={`mt-6 w-full justify-center ${popular ? "btn-gradient" : "btn-outline"}`}
-              >
-                {tier === "enterprise" ? "Contact sales" : tier === "free" ? "Start free" : "Get started"}
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+      <PricingCards plans={plans} />
     </section>
   );
 }

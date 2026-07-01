@@ -41,7 +41,9 @@ export async function completeOnboarding(formData: FormData) {
   const role = getRole(input.industry, input.role);
   if (!role) return { error: "Unknown industry or role" };
 
-  // Profile (RLS: id must equal auth.uid()).
+  // Profile (RLS: id must equal auth.uid()). Every business starts on a 7-day
+  // full-access trial (see lib/subscription.ts) — no card required.
+  const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
   const { error: profileErr } = await supabase.from("profiles").insert({
     id: user.id,
     business_name: input.businessName,
@@ -49,6 +51,7 @@ export async function completeOnboarding(formData: FormData) {
     industry: input.industry,
     role: input.role,
     plan: "free",
+    trial_ends_at: trialEndsAt,
   });
   if (profileErr) {
     if (profileErr.code === "23505") return { error: "That subdomain is taken." };
@@ -80,6 +83,8 @@ export async function completeOnboarding(formData: FormData) {
       breaks: [],
       blocked_dates: [],
       slot_interval_minutes: 15,
+      // Indian market default; owner can change under Settings.
+      timezone: "Asia/Kolkata",
     }),
     supabase.from("ai_configs").insert({
       clinic_id: user.id,

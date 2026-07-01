@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "@/action/auth";
 import type { LabelSet } from "@/lib/industries";
-import type { PlanTier } from "@/lib/types";
+import { Logo } from "@/components/marketing/logo";
 import {
   IconHome,
   IconCalendar,
@@ -28,12 +28,14 @@ export function Sidebar({
   businessName,
   roleName,
   labels,
-  plan,
+  planLabel,
+  isOwner = false,
 }: {
   businessName: string;
   roleName: string;
   labels: LabelSet;
-  plan: PlanTier;
+  planLabel: string;
+  isOwner?: boolean;
 }) {
   const pathname = usePathname();
 
@@ -79,9 +81,7 @@ export function Sidebar({
     <aside className="flex w-64 shrink-0 flex-col border-r border-ink-border bg-ink">
       {/* Brand */}
       <div className="flex items-center gap-3 px-5 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white">
-          F
-        </div>
+        <Logo className="h-9 w-9" />
         <div className="min-w-0">
           <div className="text-base font-bold tracking-tight text-white">Slotnest</div>
           <div className="truncate text-xs text-gray-500">{businessName}</div>
@@ -110,6 +110,22 @@ export function Sidebar({
           </div>
           <div className="space-y-0.5">{renderLinks(tools)}</div>
         </div>
+        {isOwner && (
+          <div>
+            <div className="px-2 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-gray-600">
+              Admin
+            </div>
+            <Link
+              href="/owner"
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-amber-300/90 transition-colors hover:bg-amber-500/10"
+            >
+              <span className="text-amber-400">
+                <IconChart />
+              </span>
+              Owner console
+            </Link>
+          </div>
+        )}
       </nav>
 
       {/* AI active footer */}
@@ -121,7 +137,7 @@ export function Sidebar({
           </div>
           <div className="mt-0.5 text-xs text-gray-400">Booking 24/7 for you</div>
           <div className="mt-1 text-[10px] uppercase tracking-wide text-gray-500">
-            {plan} plan
+            {planLabel}
           </div>
         </div>
         <form action={signOut}>

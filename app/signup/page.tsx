@@ -23,7 +23,7 @@ export default function SignupPage() {
   return (
     <AuthShell
       title="Create your account"
-      subtitle="Set up your AI receptionist in minutes — free, no card required."
+      subtitle="Start your 7-day free trial — full access, no card required."
       footer={
         <>
           Have an account?{" "}

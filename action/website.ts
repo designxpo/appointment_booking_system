@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { websiteDataSchema } from "@/lib/validation";
 import { canUseWebsiteBuilder } from "@/lib/plans";
+import { effectiveTier } from "@/lib/subscription";
 
 /**
  * CMS website actions. Saving is gated behind a paid plan (the website builder
@@ -18,11 +19,11 @@ export async function saveWebsite(raw: unknown) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("plan")
+    .select("plan, trial_ends_at, plan_expires_at")
     .eq("id", user.id)
     .single();
   if (!profile) return { error: "Profile not found" };
-  if (!canUseWebsiteBuilder(profile.plan)) {
+  if (!canUseWebsiteBuilder(effectiveTier(profile))) {
     return { error: "Upgrade to a paid plan to use the website builder." };
   }
 
@@ -96,10 +97,10 @@ export async function setPublished(isPublished: boolean) {
   if (isPublished) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("plan")
+      .select("plan, trial_ends_at, plan_expires_at")
       .eq("id", user.id)
       .single();
-    if (!profile || !canUseWebsiteBuilder(profile.plan)) {
+    if (!profile || !canUseWebsiteBuilder(effectiveTier(profile))) {
       return { error: "Upgrade to a paid plan to publish your website." };
     }
   }

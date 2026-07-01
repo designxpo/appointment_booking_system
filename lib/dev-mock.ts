@@ -39,7 +39,8 @@ export const mockProfile: Profile = {
   role: "dentist",
   plan: "professional",
   plan_started_at: new Date("2026-06-01").toISOString(),
-  plan_expires_at: new Date("2026-07-01").toISOString(),
+  plan_expires_at: new Date("2026-08-01").toISOString(),
+  trial_ends_at: null,
   last_tx_hash: null,
   created_at: new Date("2026-01-01").toISOString(),
 };

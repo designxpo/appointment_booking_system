@@ -36,6 +36,7 @@ export interface Database {
           plan: PlanTier;
           plan_started_at: string | null;
           plan_expires_at: string | null;
+          trial_ends_at: string | null;
           last_tx_hash: string | null;
           created_at: string;
         };
@@ -49,6 +50,7 @@ export interface Database {
           plan?: PlanTier;
           plan_started_at?: string | null;
           plan_expires_at?: string | null;
+          trial_ends_at?: string | null;
           last_tx_hash?: string | null;
           created_at?: string;
         };
@@ -293,6 +295,36 @@ export interface Database {
           expires_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["payment_intents"]["Insert"]>;
+        Relationships: [];
+      };
+      plan_configs: {
+        Row: {
+          tier: PlanTier;
+          name: string;
+          price_inr: number;
+          price_inr_yearly: number;
+          appointment_cap: number | null;
+          website_builder: boolean;
+          features: string[];
+          tagline: string;
+          sort: number;
+          is_active: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          tier: PlanTier;
+          name: string;
+          price_inr?: number;
+          price_inr_yearly?: number;
+          appointment_cap?: number | null;
+          website_builder?: boolean;
+          features?: string[];
+          tagline?: string;
+          sort?: number;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["plan_configs"]["Insert"]>;
         Relationships: [];
       };
     };
