@@ -95,8 +95,13 @@ export async function receptionistTurn(args: {
     now: new Date().toISOString(),
   });
 
-  const anthropic = getAnthropic();
-  const model = AI_MODEL;
+  // Each business runs its assistant on its OWN AI key (set in AI Settings).
+  // No key connected → the assistant is inactive.
+  if (cfg.ai_provider !== "anthropic" || !cfg.ai_api_key) {
+    return { error: "This assistant isn't set up yet. Please try again later." };
+  }
+  const anthropic = getAnthropic(cfg.ai_api_key);
+  const model = cfg.ai_model || AI_MODEL;
 
   const convo: Anthropic.MessageParam[] = args.messages.map((m) => ({
     role: m.role,

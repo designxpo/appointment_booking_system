@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveAiConfig } from "@/action/ai-config";
+import { AiKeySettings } from "@/components/ai-key-settings";
 import { IconBot, IconCode, IconCopy, IconExternal } from "@/components/icons";
 import type { AiConfig } from "@/lib/types";
 
@@ -279,6 +280,13 @@ export function AiSettingsHub({
           </div>
         </div>
       </section>
+
+      {/* ── AI engine (connect your key) ───────────────────────── */}
+      <AiKeySettings
+        provider={initial.ai_provider}
+        model={initial.ai_model}
+        hasKey={initial.has_api_key}
+      />
 
       {/* ── FAQ responses ─────────────────────────────────────── */}
       <section className="card">
