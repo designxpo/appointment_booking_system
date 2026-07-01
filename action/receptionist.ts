@@ -76,6 +76,7 @@ export async function receptionistTurn(args: {
     clinic_id: args.clinicId,
     instructions: cfg.instructions,
     faqs: cfg.faqs,
+    knowledge_base: cfg.knowledge_base ?? "",
     tone: cfg.tone as AiConfig["tone"],
     widget_color: cfg.widget_color,
     welcome_message: cfg.welcome_message ?? "",

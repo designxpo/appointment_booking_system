@@ -152,6 +152,7 @@ export interface Database {
           clinic_id: string;
           instructions: string;
           faqs: Faq[];
+          knowledge_base: string;
           tone: string;
           widget_color: string;
           welcome_message: string;
@@ -165,6 +166,7 @@ export interface Database {
           clinic_id: string;
           instructions?: string;
           faqs?: Faq[];
+          knowledge_base?: string;
           tone?: string;
           widget_color?: string;
           welcome_message?: string;

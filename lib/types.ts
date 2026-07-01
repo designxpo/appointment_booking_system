@@ -119,6 +119,8 @@ export interface AiConfig {
   clinic_id: string;
   instructions: string;
   faqs: { question: string; answer: string }[];
+  /** Business knowledge base — the AI answers ONLY from this + FAQs + live data. */
+  knowledge_base: string;
   tone: "warm" | "professional" | "empathetic" | "concise";
   widget_color: string; // hex
   /** First message the visitor sees when the widget opens. */

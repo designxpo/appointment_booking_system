@@ -25,6 +25,7 @@ export async function saveAiConfig(raw: unknown) {
     .from("ai_configs")
     .update({
       instructions: d.instructions,
+      knowledge_base: d.knowledgeBase,
       faqs: d.faqs,
       tone: d.tone,
       widget_color: d.widgetColor,

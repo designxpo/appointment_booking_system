@@ -204,6 +204,13 @@ export const mockAiConfig: AiConfig = {
       answer: "123 Main Street, downtown. Parking is available out back.",
     },
   ],
+  knowledge_base:
+    "About: Bright Smile Dental is a family-friendly practice open since 2010.\n" +
+    "Location: 123 Main Street, downtown. Free parking out back.\n" +
+    "Hours: Mon–Fri 9am–5pm. Closed weekends and public holidays.\n" +
+    "Insurance: We accept most major dental insurance plans; we'll verify coverage at your first visit.\n" +
+    "Payment: Cash, card, and UPI accepted.\n" +
+    "Services: check-ups & cleaning, fillings, root canals. New patients welcome.",
   tone: "warm",
   widget_color: "#6366f1",
   welcome_message:

@@ -43,6 +43,7 @@ export const createAppointmentSchema = z.object({
 
 export const aiConfigSchema = z.object({
   instructions: z.string().max(8000),
+  knowledgeBase: z.string().max(20000).default(""),
   faqs: z
     .array(
       z.object({

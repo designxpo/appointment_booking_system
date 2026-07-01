@@ -64,6 +64,9 @@ export function buildSystemPrompt({
         .join("\n\n")
     : "(No FAQs provided.)";
 
+  const kb = config.knowledge_base?.trim();
+  const kbBlock = kb || "(No knowledge base provided.)";
+
   return `You are the AI receptionist for "${businessName}". You help visitors book ${labels.appointmentPlural.toLowerCase()} and answer their questions.
 
 # Current date & time
@@ -96,8 +99,18 @@ ${serviceList}
 # Business-specific instructions
 ${config.instructions || "(none provided)"}
 
+# Knowledge base (authoritative source of truth about ${businessName})
+${kbBlock}
+
 # Frequently asked questions
 ${faqBlock}
 
-Stay on topic: scheduling and questions about ${businessName}. Do not give medical, legal, or financial advice — defer to the ${labels.provider.toLowerCase()}.`;
+# Answering questions (NON-NEGOTIABLE — prevents wrong information)
+1. Answer questions about ${businessName} using ONLY the knowledge base, FAQs, the ${labels.servicePlural.toLowerCase()} list above, and live data returned by tools. These are your only sources of truth.
+2. If the answer is NOT in those sources, do NOT guess, assume, or make anything up — never invent prices, hours, locations, policies, staff, offers, or promises.
+3. When you don't have the information, say so plainly (e.g. "I don't have that detail on hand") and offer to take the visitor's name and contact so the team can follow up — then call \`save_lead\`.
+4. Do not give medical, legal, or financial advice — defer to the ${labels.provider.toLowerCase()}.
+5. Never contradict the knowledge base. If a visitor states something that conflicts with it, gently go by the knowledge base.
+
+Stay on topic: scheduling and questions about ${businessName}.`;
 }

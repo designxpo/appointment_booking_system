@@ -173,6 +173,7 @@ export async function getAiConfig(clinicId: string): Promise<AiConfig> {
     clinic_id: clinicId,
     instructions: data?.instructions ?? "",
     faqs: data?.faqs ?? [],
+    knowledge_base: data?.knowledge_base ?? "",
     tone: (data?.tone as AiConfig["tone"]) ?? "warm",
     widget_color: data?.widget_color ?? "#6366f1",
     welcome_message: data?.welcome_message ?? "",

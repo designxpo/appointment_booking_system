@@ -65,6 +65,7 @@ export function AiSettingsHub({
     setStatus(null);
     const res = await saveAiConfig({
       instructions: d.instructions,
+      knowledgeBase: d.knowledge_base,
       faqs: d.faqs.filter((f) => f.question && f.answer),
       tone: d.tone,
       widgetColor: d.widget_color,
@@ -232,6 +233,53 @@ export function AiSettingsHub({
             className="input"
           />
           <p className="mt-1 text-[11px] text-gray-500">Tell the AI how to handle bookings</p>
+        </div>
+      </section>
+
+      {/* ── Knowledge base ────────────────────────────────────── */}
+      <section className="card">
+        <div className="flex items-center gap-3">
+          <span className="page-icon">
+            <IconBot className="h-5 w-5" />
+          </span>
+          <div>
+            <h2 className="flex items-center gap-2 font-semibold text-white">
+              Knowledge Base
+              <span className="chip border border-emerald-500/40 bg-emerald-500/10 text-emerald-300">
+                Anti-hallucination
+              </span>
+            </h2>
+            <p className="text-xs text-gray-500">
+              Everything the AI is allowed to say about your business. It answers
+              questions <span className="text-gray-300">only</span> from this (plus your
+              FAQs &amp; live availability) — so it won&apos;t make things up.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <textarea
+            rows={12}
+            value={d.knowledge_base}
+            onChange={(e) => set("knowledge_base", e.target.value)}
+            placeholder={`Add anything a customer might ask about, e.g.:
+
+• About us — who you are, years in business, specialities
+• Location & parking, service areas
+• Opening hours & holidays
+• Pricing, packages, deposits, cancellation policy
+• Payment methods (UPI, cards, cash)
+• Insurance / documents to bring
+• Staff & their specialities
+• Anything else customers ask often`}
+            className="input font-mono text-xs leading-relaxed"
+          />
+          <div className="mt-1 flex items-center justify-between text-[11px] text-gray-500">
+            <span>Plain text or simple notes. The more you add, the smarter and more accurate the AI.</span>
+            <span className={d.knowledge_base.length > 20000 ? "text-rose-400" : ""}>
+              {d.knowledge_base.length.toLocaleString("en-IN")} / 20,000
+            </span>
+          </div>
         </div>
       </section>
 
