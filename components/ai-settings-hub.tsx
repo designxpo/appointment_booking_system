@@ -285,6 +285,7 @@ export function AiSettingsHub({
       <AiKeySettings
         provider={initial.ai_provider}
         model={initial.ai_model}
+        baseUrl={initial.ai_base_url}
         hasKey={initial.has_api_key}
       />
 

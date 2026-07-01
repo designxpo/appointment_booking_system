@@ -160,6 +160,7 @@ export interface Database {
           ai_provider: string;
           ai_api_key: string | null;
           ai_model: string | null;
+          ai_base_url: string | null;
           updated_at: string;
         };
         Insert: {
@@ -174,6 +175,7 @@ export interface Database {
           ai_provider?: string;
           ai_api_key?: string | null;
           ai_model?: string | null;
+          ai_base_url?: string | null;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["ai_configs"]["Insert"]>;

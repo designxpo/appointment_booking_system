@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { aiConfigSchema } from "@/lib/validation";
+import { providerDef } from "@/lib/ai/providers";
 import type { AiProvider } from "@/lib/types";
 
 /** Saves the AI receptionist configuration (instructions, FAQs, tone, widget). */
@@ -40,14 +41,15 @@ export async function saveAiConfig(raw: unknown) {
 
 /**
  * Connects (or clears) the business's own AI provider key. Available on every
- * plan — each business runs its assistant on its own key. The raw key is stored
- * server-side and never returned to the client. Only Anthropic (Claude) is
- * executed today; other providers are accepted in the UI as "coming soon".
+ * plan — each business runs its assistant on its own key, using ANY provider
+ * (Anthropic natively; everything else via the OpenAI-compatible API). The raw
+ * key is stored server-side and never returned to the client.
  */
 export async function saveAiKey(input: {
   provider: AiProvider;
   apiKey?: string;
   model?: string;
+  baseUrl?: string;
 }) {
   const supabase = await createClient();
   const {
@@ -59,29 +61,49 @@ export async function saveAiKey(input: {
   if (input.provider === "slotnest") {
     const { error } = await supabase
       .from("ai_configs")
-      .update({ ai_provider: "slotnest", ai_api_key: null, ai_model: null, updated_at: new Date().toISOString() })
+      .update({
+        ai_provider: "slotnest",
+        ai_api_key: null,
+        ai_model: null,
+        ai_base_url: null,
+        updated_at: new Date().toISOString(),
+      })
       .eq("clinic_id", user.id);
     if (error) return { error: error.message };
     revalidatePath("/dashboard/ai");
     return { ok: true };
   }
 
-  if (input.provider !== "anthropic") {
-    return { error: "That provider isn't available yet — connect a Claude (Anthropic) key for now." };
+  const def = providerDef(input.provider);
+  if (!def) return { error: "Unknown AI provider." };
+
+  const model = (input.model ?? "").trim() || null;
+
+  // Custom OpenAI-compatible endpoints need a base URL.
+  let baseUrl: string | null = null;
+  if (def.needsBaseUrl) {
+    baseUrl = (input.baseUrl ?? "").trim() || null;
+    if (!baseUrl || !/^https?:\/\//i.test(baseUrl)) {
+      return { error: "Enter a valid base URL (starting with https://) for the custom endpoint." };
+    }
   }
 
   const key = (input.apiKey ?? "").trim();
-  const model = (input.model ?? "").trim() || null;
-
   const update: {
     ai_provider: string;
     ai_model: string | null;
+    ai_base_url: string | null;
     updated_at: string;
     ai_api_key?: string;
-  } = { ai_provider: "anthropic", ai_model: model, updated_at: new Date().toISOString() };
+  } = {
+    ai_provider: input.provider,
+    ai_model: model,
+    ai_base_url: baseUrl,
+    updated_at: new Date().toISOString(),
+  };
 
   if (key) {
-    if (key.length < 20) return { error: "That doesn't look like a valid API key." };
+    if (key.length < 15) return { error: "That doesn't look like a valid API key." };
     update.ai_api_key = key;
   } else {
     // No new key entered — only allowed if one is already stored.
@@ -91,7 +113,7 @@ export async function saveAiKey(input: {
       .eq("clinic_id", user.id)
       .single();
     if (!existing?.ai_api_key) {
-      return { error: "Enter your Claude API key to activate your assistant." };
+      return { error: "Enter your API key to activate your assistant." };
     }
   }
 

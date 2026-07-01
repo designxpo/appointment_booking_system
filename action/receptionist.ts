@@ -2,7 +2,12 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getAnthropic, AI_MODEL, RECEPTIONIST_TOOLS } from "@/lib/ai/client";
+import { getAnthropic, RECEPTIONIST_TOOLS } from "@/lib/ai/client";
+import {
+  runOpenAiCompatibleTurn,
+  type ToolDispatcher,
+} from "@/lib/ai/openai-compat";
+import { providerDef, resolveBaseUrl } from "@/lib/ai/providers";
 import { buildSystemPrompt } from "@/lib/ai/instructions";
 import {
   computeAvailableSlots,
@@ -81,6 +86,7 @@ export async function receptionistTurn(args: {
     session_duration_minutes: cfg.session_duration_minutes,
     ai_provider: (cfg.ai_provider as AiConfig["ai_provider"]) ?? "slotnest",
     ai_model: cfg.ai_model ?? null,
+    ai_base_url: cfg.ai_base_url ?? null,
     has_api_key: Boolean(cfg.ai_api_key),
   };
   const settings = settingsFromRow(args.clinicId, setRow);
@@ -95,15 +101,58 @@ export async function receptionistTurn(args: {
     now: new Date().toISOString(),
   });
 
-  // Each business runs its assistant on its OWN AI key (set in AI Settings).
-  // No key connected → the assistant is inactive.
-  if (cfg.ai_provider !== "anthropic" || !cfg.ai_api_key) {
+  // Each business runs its assistant on its OWN AI key (connected in AI Settings).
+  // Any provider works: Anthropic uses the native SDK; everything else goes
+  // through the OpenAI-compatible driver. No key connected → assistant inactive.
+  const def = providerDef(cfg.ai_provider);
+  if (!def || !cfg.ai_api_key) {
     return { error: "This assistant isn't set up yet. Please try again later." };
   }
-  const anthropic = getAnthropic(cfg.ai_api_key);
-  const model = cfg.ai_model || AI_MODEL;
+  const model = cfg.ai_model?.trim() || def.defaultModel;
 
-  const convo: Anthropic.MessageParam[] = args.messages.map((m) => ({
+  const ctx = { clinicId: args.clinicId, services: serviceRows, settings };
+  const dispatchTool: ToolDispatcher = (name, input) => runTool(name, input, ctx);
+
+  try {
+    if (def.kind === "anthropic") {
+      return await runAnthropicTurn({
+        apiKey: cfg.ai_api_key,
+        model,
+        system,
+        messages: args.messages,
+        dispatchTool,
+      });
+    }
+
+    const baseUrl = resolveBaseUrl(cfg.ai_provider, cfg.ai_base_url);
+    if (!baseUrl || !model) {
+      return { error: "This assistant isn't set up yet. Please try again later." };
+    }
+    return await runOpenAiCompatibleTurn({
+      baseUrl,
+      apiKey: cfg.ai_api_key,
+      model,
+      system,
+      messages: args.messages,
+      dispatchTool,
+    });
+  } catch {
+    return {
+      error: "The AI assistant hit an error. Please check the API key and model in AI Settings.",
+    };
+  }
+}
+
+/** Native Anthropic (Claude) driver — tool-use loop over the Messages API. */
+async function runAnthropicTurn(opts: {
+  apiKey: string;
+  model: string;
+  system: string;
+  messages: ChatMessage[];
+  dispatchTool: ToolDispatcher;
+}): Promise<{ reply: string; bookedAppointmentId?: string }> {
+  const anthropic = getAnthropic(opts.apiKey);
+  const convo: Anthropic.MessageParam[] = opts.messages.map((m) => ({
     role: m.role,
     content: m.content,
   }));
@@ -112,9 +161,9 @@ export async function receptionistTurn(args: {
 
   for (let i = 0; i < MAX_TOOL_ITERATIONS; i++) {
     const res = await anthropic.messages.create({
-      model,
+      model: opts.model,
       max_tokens: 1024,
-      system,
+      system: opts.system,
       tools: RECEPTIONIST_TOOLS,
       messages: convo,
     });
@@ -136,11 +185,7 @@ export async function receptionistTurn(args: {
 
     const toolResults: Anthropic.ToolResultBlockParam[] = [];
     for (const tu of toolUses) {
-      const out = await runTool(tu, {
-        clinicId: args.clinicId,
-        services: serviceRows,
-        settings,
-      });
+      const out = await opts.dispatchTool(tu.name, tu.input as Record<string, unknown>);
       if (out.bookedId) bookedAppointmentId = out.bookedId;
       toolResults.push({
         type: "tool_result",
@@ -156,13 +201,13 @@ export async function receptionistTurn(args: {
 }
 
 async function runTool(
-  tu: Anthropic.ToolUseBlock,
+  name: string,
+  input: Record<string, unknown>,
   ctx: { clinicId: string; services: ServiceRow[]; settings: Settings },
 ): Promise<{ content: string; isError?: boolean; bookedId?: string }> {
   const admin = createAdminClient();
-  const input = tu.input as Record<string, unknown>;
 
-  if (tu.name === "check_availability") {
+  if (name === "check_availability") {
     const serviceId = String(input.service_id ?? "");
     const date = String(input.date ?? "");
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -200,7 +245,7 @@ async function runTool(
     };
   }
 
-  if (tu.name === "book_appointment") {
+  if (name === "book_appointment") {
     const result = await bookAppointment({
       clinicId: ctx.clinicId,
       serviceId: String(input.service_id ?? ""),
@@ -219,12 +264,12 @@ async function runTool(
     };
   }
 
-  if (tu.name === "save_lead") {
-    const name = String(input.name ?? "").slice(0, 120);
+  if (name === "save_lead") {
+    const leadName = String(input.name ?? "").slice(0, 120);
     const email = input.email ? String(input.email).slice(0, 200) : null;
     const phone = input.phone ? String(input.phone).slice(0, 40) : null;
     const note = input.note ? String(input.note).slice(0, 500) : null;
-    if (!name) return { content: "Lead needs a name.", isError: true };
+    if (!leadName) return { content: "Lead needs a name.", isError: true };
     if (!email && !phone) {
       return { content: "Lead needs an email or phone.", isError: true };
     }
@@ -232,7 +277,7 @@ async function runTool(
     const { error } = await admin.from("leads").upsert(
       {
         clinic_id: ctx.clinicId,
-        name,
+        name: leadName,
         email,
         phone,
         source: "ai_chat",
@@ -246,5 +291,5 @@ async function runTool(
     return { content: JSON.stringify({ saved: true }) };
   }
 
-  return { content: `Unknown tool: ${tu.name}`, isError: true };
+  return { content: `Unknown tool: ${name}`, isError: true };
 }

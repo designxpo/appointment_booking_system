@@ -218,6 +218,7 @@ export const mockAiConfig: AiConfig = {
   session_duration_minutes: 30,
   ai_provider: "slotnest",
   ai_model: null,
+  ai_base_url: null,
   has_api_key: false,
 };
 

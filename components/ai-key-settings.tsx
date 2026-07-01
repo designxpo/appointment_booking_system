@@ -3,41 +3,45 @@
 import { useState } from "react";
 import { saveAiKey } from "@/action/ai-config";
 import { IconBot } from "@/components/icons";
+import { AI_PROVIDERS, AI_PROVIDER_KEYS } from "@/lib/ai/providers";
 import type { AiProvider } from "@/lib/types";
 
-const PROVIDERS: { value: AiProvider; label: string; disabled?: boolean }[] = [
-  { value: "anthropic", label: "Anthropic — Claude" },
-  { value: "openai", label: "OpenAI — GPT (coming soon)", disabled: true },
-  { value: "google", label: "Google — Gemini (coming soon)", disabled: true },
-];
-
 /**
- * Connect-your-own-AI-key card. Your AI receptionist runs on YOUR provider key —
- * until one is connected, the assistant is inactive. Available on every plan.
+ * Connect-your-own-AI-key card. Each business runs its receptionist on its OWN
+ * provider key — any provider works (Anthropic natively; OpenAI, Gemini, Groq,
+ * Mistral, OpenRouter, DeepSeek, xAI, Together, or any OpenAI-compatible
+ * endpoint via "Custom"). Until a key is connected the assistant is inactive.
  * The raw key is stored server-side and never sent back to the browser.
  */
 export function AiKeySettings({
   provider: initialProvider,
   model: initialModel,
+  baseUrl: initialBaseUrl,
   hasKey,
 }: {
   provider: AiProvider;
   model: string | null;
+  baseUrl: string | null;
   hasKey: boolean;
 }) {
   const [provider, setProvider] = useState<AiProvider>(
-    initialProvider === "slotnest" ? "anthropic" : initialProvider,
+    initialProvider === "slotnest" || !AI_PROVIDERS[initialProvider]
+      ? "anthropic"
+      : initialProvider,
   );
   const [apiKey, setApiKey] = useState("");
   const [model, setModel] = useState(initialModel ?? "");
+  const [baseUrl, setBaseUrl] = useState(initialBaseUrl ?? "");
   const [connected, setConnected] = useState(hasKey);
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
 
+  const def = AI_PROVIDERS[provider];
+
   async function save() {
     setPending(true);
     setStatus(null);
-    const res = await saveAiKey({ provider, apiKey, model });
+    const res = await saveAiKey({ provider, apiKey, model, baseUrl });
     setPending(false);
     if (res?.error) setStatus({ ok: false, text: res.error });
     else {
@@ -69,8 +73,8 @@ export function AiKeySettings({
         <div>
           <h2 className="font-semibold text-white">AI Engine — connect your key</h2>
           <p className="text-xs text-gray-500">
-            Your AI receptionist runs on your own AI provider key, on your account and
-            billing.
+            Run your receptionist on any AI provider you like — Claude, OpenAI, Gemini,
+            Groq, Mistral, and more — on your own account &amp; billing.
           </p>
         </div>
       </div>
@@ -96,13 +100,29 @@ export function AiKeySettings({
             onChange={(e) => setProvider(e.target.value as AiProvider)}
             className="input"
           >
-            {PROVIDERS.map((p) => (
-              <option key={p.value} value={p.value} disabled={p.disabled}>
-                {p.label}
+            {AI_PROVIDER_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {AI_PROVIDERS[key].label}
               </option>
             ))}
           </select>
         </div>
+
+        {def?.needsBaseUrl && (
+          <div>
+            <div className="section-title mb-1">Base URL</div>
+            <input
+              value={baseUrl}
+              onChange={(e) => setBaseUrl(e.target.value)}
+              placeholder="https://your-endpoint.com/v1"
+              className="input font-mono"
+            />
+            <p className="mt-1 text-[11px] text-gray-500">
+              Any OpenAI-compatible <code>/chat/completions</code> endpoint (self-hosted,
+              gateway, etc.).
+            </p>
+          </div>
+        )}
 
         <div>
           <div className="section-title mb-1">API key</div>
@@ -111,20 +131,25 @@ export function AiKeySettings({
             autoComplete="off"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
-            placeholder={connected ? "•••••••••• saved — leave blank to keep" : "sk-ant-…"}
+            placeholder={connected ? "•••••••••• saved — leave blank to keep" : def?.keyHint ?? "your API key"}
             className="input font-mono"
           />
           <p className="mt-1 text-[11px] text-gray-500">
-            Get a Claude key from{" "}
-            <a
-              href="https://console.anthropic.com/settings/keys"
-              target="_blank"
-              rel="noreferrer"
-              className="text-brand hover:text-indigo-300"
-            >
-              console.anthropic.com
-            </a>
-            . Stored securely and never shown again.
+            {def?.keysUrl ? (
+              <>
+                Get a key from{" "}
+                <a
+                  href={def.keysUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-brand hover:text-indigo-300"
+                >
+                  {new URL(def.keysUrl).hostname}
+                </a>
+                .{" "}
+              </>
+            ) : null}
+            Stored securely and never shown again.
           </p>
         </div>
 
@@ -133,10 +158,13 @@ export function AiKeySettings({
           <input
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            placeholder="claude-sonnet-4-6"
+            placeholder={def?.defaultModel || "model name"}
             className="input font-mono"
           />
-          <p className="mt-1 text-[11px] text-gray-500">Leave blank to use the default model.</p>
+          <p className="mt-1 text-[11px] text-gray-500">
+            Leave blank to use the provider default
+            {def?.defaultModel ? ` (${def.defaultModel})` : ""}.
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
